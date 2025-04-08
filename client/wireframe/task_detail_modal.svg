@@ -1,0 +1,61 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Overlay -->
+  <rect width="800" height="600" fill="rgba(0,0,0,0.5)" />
+  
+  <!-- Modal Container -->
+  <rect x="150" y="50" width="500" height="500" rx="8" fill="white" />
+  
+  <!-- Modal Header -->
+  <rect x="150" y="50" width="500" height="60" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="180" y="87" font-family="Arial" font-size="18" font-weight="bold" fill="#111827">Task Details</text>
+  <circle cx="620" cy="80" r="15" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="620" y="85" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#6b7280">×</text>
+  
+  <!-- Tabs -->
+  <rect x="150" y="110" width="500" height="40" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="200" y="135" font-family="Arial" font-size="14" font-weight="bold" fill="#3b82f6">Details</text>
+  <rect x="170" y="145" width="80" height="4" fill="#3b82f6" rx="2" />
+  <text x="300" y="135" font-family="Arial" font-size="14" fill="#6b7280">Comments (2)</text>
+  <text x="430" y="135" font-family="Arial" font-size="14" fill="#6b7280">Attachments (1)</text>
+  
+  <!-- Modal Content -->
+  <rect x="150" y="150" width="500" height="350" fill="white" />
+  
+  <!-- Form Fields -->
+  <text x="180" y="180" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Title</text>
+  <rect x="180" y="190" width="440" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="190" y="213" font-family="Arial" font-size="14" fill="#111827">Implement authentication</text>
+  
+  <text x="180" y="240" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Description</text>
+  <rect x="180" y="250" width="440" height="80" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="190" y="273" font-family="Arial" font-size="14" fill="#111827">Setup JWT authentication and user registration/login flows</text>
+  
+  <!-- Two Column Layout -->
+  <text x="180" y="350" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Status</text>
+  <rect x="180" y="360" width="210" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="190" y="383" font-family="Arial" font-size="14" fill="#111827">In Progress</text>
+  
+  <text x="410" y="350" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Priority</text>
+  <rect x="410" y="360" width="210" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="420" y="383" font-family="Arial" font-size="14" fill="#111827">High</text>
+  
+  <text x="180" y="410" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Assigned To</text>
+  <rect x="180" y="420" width="210" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="190" y="443" font-family="Arial" font-size="14" fill="#111827">Alex Kim</text>
+  
+  <text x="410" y="410" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Due Date</text>
+  <rect x="410" y="420" width="210" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="420" y="443" font-family="Arial" font-size="14" fill="#111827">April 15, 2025</text>
+  
+  <!-- Footer Actions -->
+  <rect x="150" y="500" width="500" height="50" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  
+  <rect x="180" y="510" width="100" height="30" rx="4" fill="#fee2e2" />
+  <text x="230" y="530" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#b91c1c">Delete</text>
+  
+  <rect x="510" y="510" width="110" height="30" rx="4" fill="#3b82f6" />
+  <text x="565" y="530" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Save Changes</text>
+  
+  <rect x="390" y="510" width="110" height="30" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="445" y="530" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#374151">Cancel</text>
+</svg>

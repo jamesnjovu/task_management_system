@@ -1,0 +1,35 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f3f4f6" />
+  
+  <!-- Login Card -->
+  <rect x="250" y="100" width="300" height="400" rx="10" fill="white" stroke="#e5e7eb" stroke-width="2" />
+  
+  <!-- Logo/Title -->
+  <text x="400" y="150" font-family="Arial" font-size="22" font-weight="bold" text-anchor="middle" fill="#111827">Task Management System</text>
+  <text x="400" y="180" font-family="Arial" font-size="16" text-anchor="middle" fill="#6b7280">Sign in to your account</text>
+  
+  <!-- Email Input -->
+  <text x="280" y="230" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Email Address</text>
+  <rect x="280" y="240" width="240" height="40" rx="5" fill="white" stroke="#d1d5db" stroke-width="1" />
+  
+  <!-- Password Input -->
+  <text x="280" y="310" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Password</text>
+  <rect x="280" y="320" width="240" height="40" rx="5" fill="white" stroke="#d1d5db" stroke-width="1" />
+  
+  <!-- Remember Me Checkbox -->
+  <rect x="280" y="380" width="16" height="16" rx="3" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="306" y="393" font-family="Arial" font-size="14" fill="#374151">Remember me</text>
+  
+  <!-- Forgot Password Link -->
+  <text x="520" y="393" font-family="Arial" font-size="14" text-anchor="end" fill="#3b82f6">Forgot password?</text>
+  
+  <!-- Sign In Button -->
+  <rect x="280" y="420" width="240" height="40" rx="5" fill="#3b82f6" />
+  <text x="400" y="445" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Sign in</text>
+  
+  <!-- Create Account Link -->
+  <text x="400" y="480" font-family="Arial" font-size="14" text-anchor="middle" fill="#6b7280">
+    Don't have an account? <tspan fill="#3b82f6">Create one</tspan>
+  </text>
+</svg>

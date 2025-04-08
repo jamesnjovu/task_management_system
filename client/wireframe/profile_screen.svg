@@ -1,0 +1,84 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f3f4f6" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="800" height="60" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="30" y="37" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">Task Manager</text>
+  
+  <!-- User Menu -->
+  <circle cx="760" cy="30" r="20" fill="#dbeafe" />
+  <text x="760" y="36" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#1d4ed8">U</text>
+  
+  <!-- Sidebar -->
+  <rect x="0" y="60" width="200" height="540" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="20" y="100" font-family="Arial" font-size="16" fill="#6b7280">Dashboard</text>
+  <text x="20" y="140" font-family="Arial" font-size="16" fill="#6b7280">Teams</text>
+  <text x="20" y="180" font-family="Arial" font-size="14" font-weight="bold" fill="#9ca3af">YOUR TEAMS</text>
+  <text x="30" y="210" font-family="Arial" font-size="14" fill="#6b7280">Development Team</text>
+  <text x="30" y="240" font-family="Arial" font-size="14" fill="#6b7280">Design Team</text>
+  <text x="30" y="270" font-family="Arial" font-size="14" fill="#6b7280">+ Create Team</text>
+  <text x="20" y="310" font-family="Arial" font-size="16" font-weight="bold" fill="#3b82f6">Profile</text>
+  
+  <!-- Main Content -->
+  <text x="220" y="100" font-family="Arial" font-size="24" font-weight="bold" fill="#111827">Profile</text>
+  
+  <!-- Profile Card -->
+  <rect x="220" y="130" width="560" height="350" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  
+  <!-- Card Header -->
+  <rect x="220" y="130" width="560" height="60" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="250" y="170" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">User Information</text>
+  
+  <!-- Edit Buttons -->
+  <rect x="600" y="145" width="80" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="640" y="165" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#374151">Edit Profile</text>
+  
+  <rect x="690" y="145" width="70" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="725" y="165" font-family="Arial" font-size="10" font-weight="bold" text-anchor="middle" fill="#374151">Change Password</text>
+  
+  <!-- Profile Form -->
+  <text x="250" y="220" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Username</text>
+  <text x="250" y="245" font-family="Arial" font-size="14" fill="#111827">johndoe</text>
+  
+  <text x="550" y="220" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Email Address</text>
+  <text x="550" y="245" font-family="Arial" font-size="14" fill="#111827">john.doe@example.com</text>
+  
+  <text x="250" y="290" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">First Name</text>
+  <text x="250" y="315" font-family="Arial" font-size="14" fill="#111827">John</text>
+  
+  <text x="550" y="290" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Last Name</text>
+  <text x="550" y="315" font-family="Arial" font-size="14" fill="#111827">Doe</text>
+  
+  <!-- Edit Mode (shown as an overlay) -->
+  <rect x="0" y="0" width="800" height="600" fill="rgba(255,255,255,0.7)" />
+  <rect x="220" y="130" width="560" height="350" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  
+  <!-- Card Header -->
+  <rect x="220" y="130" width="560" height="60" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="250" y="170" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Edit Profile</text>
+  
+  <!-- Edit Form -->
+  <text x="250" y="220" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Username</text>
+  <rect x="250" y="230" width="240" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="260" y="253" font-family="Arial" font-size="14" fill="#111827">johndoe</text>
+  
+  <text x="510" y="220" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Email Address</text>
+  <rect x="510" y="230" width="240" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="520" y="253" font-family="Arial" font-size="14" fill="#111827">john.doe@example.com</text>
+  
+  <text x="250" y="290" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">First Name</text>
+  <rect x="250" y="300" width="240" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="260" y="323" font-family="Arial" font-size="14" fill="#111827">John</text>
+  
+  <text x="510" y="290" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Last Name</text>
+  <rect x="510" y="300" width="240" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="520" y="323" font-family="Arial" font-size="14" fill="#111827">Doe</text>
+  
+  <!-- Form Actions -->
+  <rect x="590" y="400" width="80" height="36" rx="6" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="630" y="423" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#374151">Cancel</text>
+  
+  <rect x="680" y="400" width="100" height="36" rx="6" fill="#3b82f6" />
+  <text x="730" y="423" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Save Changes</text>
+</svg>

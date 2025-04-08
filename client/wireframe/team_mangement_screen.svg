@@ -1,0 +1,80 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f3f4f6" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="800" height="60" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="30" y="37" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">Task Manager</text>
+  
+  <!-- User Menu -->
+  <circle cx="760" cy="30" r="20" fill="#dbeafe" />
+  <text x="760" y="36" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#1d4ed8">U</text>
+  
+  <!-- Sidebar -->
+  <rect x="0" y="60" width="200" height="540" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="20" y="100" font-family="Arial" font-size="16" fill="#6b7280">Dashboard</text>
+  <text x="20" y="140" font-family="Arial" font-size="16" font-weight="bold" fill="#3b82f6">Teams</text>
+  <text x="20" y="180" font-family="Arial" font-size="14" font-weight="bold" fill="#9ca3af">YOUR TEAMS</text>
+  <text x="30" y="210" font-family="Arial" font-size="14" fill="#6b7280">Development Team</text>
+  <text x="30" y="240" font-family="Arial" font-size="14" fill="#6b7280">Design Team</text>
+  <text x="30" y="270" font-family="Arial" font-size="14" fill="#6b7280">+ Create Team</text>
+  
+  <!-- Main Content -->
+  <text x="220" y="100" font-family="Arial" font-size="24" font-weight="bold" fill="#111827">Team Management</text>
+  
+  <!-- Create Team Button -->
+  <rect x="680" y="85" width="120" height="35" rx="6" fill="#3b82f6" />
+  <text x="740" y="107" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">+ Create Team</text>
+  
+  <!-- Team Cards -->
+  <rect x="220" y="130" width="250" height="160" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="240" y="160" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Development Team</text>
+  <text x="240" y="180" font-family="Arial" font-size="14" fill="#6b7280">Main development team for the project</text>
+  <rect x="240" y="195" width="60" height="24" rx="12" fill="#dbeafe" />
+  <text x="270" y="212" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">admin</text>
+  <rect x="240" y="230" width="90" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="285" y="250" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#374151">View Tasks</text>
+  <rect x="340" y="230" width="50" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="365" y="250" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#374151">Edit</text>
+  <rect x="400" y="230" width="60" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="430" y="250" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#ef4444">Delete</text>
+  
+  <rect x="490" y="130" width="250" height="160" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="510" y="160" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Design Team</text>
+  <text x="510" y="180" font-family="Arial" font-size="14" fill="#6b7280">UI/UX design team</text>
+  <rect x="510" y="195" width="70" height="24" rx="12" fill="#dbeafe" />
+  <text x="545" y="212" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">member</text>
+  <rect x="510" y="230" width="90" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="555" y="250" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#374151">View Tasks</text>
+  
+  <rect x="220" y="310" width="250" height="160" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="240" y="340" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Marketing Team</text>
+  <text x="240" y="360" font-family="Arial" font-size="14" fill="#6b7280">Content and social media team</text>
+  <rect x="240" y="375" width="60" height="24" rx="12" fill="#dbeafe" />
+  <text x="270" y="392" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">admin</text>
+  <rect x="240" y="410" width="90" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="285" y="430" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#374151">View Tasks</text>
+  <rect x="340" y="410" width="50" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="365" y="430" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#374151">Edit</text>
+  <rect x="400" y="410" width="60" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" />
+  <text x="430" y="430" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="#ef4444">Delete</text>
+  
+  <!-- Create Team Modal Overlay (shown as an overlay) -->
+  <rect x="0" y="0" width="800" height="600" fill="rgba(0,0,0,0.5)" />
+  <rect x="250" y="150" width="300" height="300" rx="8" fill="white" />
+  <text x="280" y="190" font-family="Arial" font-size="18" font-weight="bold" fill="#111827">Create a New Team</text>
+  <circle cx="530" cy="170" r="12" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="530" y="175" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#6b7280">×</text>
+  
+  <text x="280" y="220" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Team Name</text>
+  <rect x="280" y="230" width="240" height="36" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  
+  <text x="280" y="280" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Description</text>
+  <rect x="280" y="290" width="240" height="80" rx="4" fill="white" stroke="#d1d5db" stroke-width="1" />
+  
+  <rect x="280" y="390" width="100" height="36" rx="6" fill="white" stroke="#d1d5db" stroke-width="1" />
+  <text x="330" y="413" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#374151">Cancel</text>
+  
+  <rect x="390" y="390" width="130" height="36" rx="6" fill="#3b82f6" />
+  <text x="455" y="413" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Create Team</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f3f4f6" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="800" height="60" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="30" y="37" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">Task Manager</text>
+  
+  <!-- User Menu -->
+  <circle cx="760" cy="30" r="20" fill="#dbeafe" />
+  <text x="760" y="36" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#1d4ed8">U</text>
+  
+  <!-- Sidebar -->
+  <rect x="0" y="60" width="200" height="540" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="20" y="100" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Dashboard</text>
+  <text x="20" y="140" font-family="Arial" font-size="16" fill="#6b7280">Teams</text>
+  <text x="20" y="180" font-family="Arial" font-size="14" font-weight="bold" fill="#9ca3af">YOUR TEAMS</text>
+  <text x="30" y="210" font-family="Arial" font-size="14" fill="#6b7280">Development Team</text>
+  <text x="30" y="240" font-family="Arial" font-size="14" fill="#6b7280">Design Team</text>
+  <text x="30" y="270" font-family="Arial" font-size="14" fill="#6b7280">+ Create Team</text>
+  
+  <!-- Main Content -->
+  <text x="220" y="100" font-family="Arial" font-size="24" font-weight="bold" fill="#111827">Dashboard</text>
+  <text x="220" y="130" font-family="Arial" font-size="16" fill="#6b7280">Welcome back, User</text>
+  
+  <!-- Stats Cards -->
+  <rect x="220" y="150" width="130" height="90" rx="6" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="240" y="180" font-family="Arial" font-size="12" fill="#6b7280">Total Tasks</text>
+  <text x="240" y="210" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">12</text>
+  
+  <rect x="370" y="150" width="130" height="90" rx="6" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="390" y="180" font-family="Arial" font-size="12" fill="#6b7280">In Progress</text>
+  <text x="390" y="210" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">5</text>
+  
+  <rect x="520" y="150" width="130" height="90" rx="6" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="540" y="180" font-family="Arial" font-size="12" fill="#6b7280">Completed</text>
+  <text x="540" y="210" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">4</text>
+  
+  <rect x="670" y="150" width="130" height="90" rx="6" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="690" y="180" font-family="Arial" font-size="12" fill="#6b7280">Teams</text>
+  <text x="690" y="210" font-family="Arial" font-size="20" font-weight="bold" fill="#111827">3</text>
+  
+  <!-- Teams Card -->
+  <rect x="220" y="270" width="280" height="280" rx="6" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="240" y="300" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Your Teams</text>
+  <line x1="220" y1="320" x2="500" y2="320" stroke="#e5e7eb" stroke-width="1" />
+  
+  <!-- Team Entries -->
+  <text x="240" y="350" font-family="Arial" font-size="14" font-weight="bold" fill="#111827">Development Team</text>
+  <text x="240" y="370" font-family="Arial" font-size="12" fill="#6b7280">Main development team for the project</text>
+  <rect x="440" y="345" width="40" height="20" rx="10" fill="#dbeafe" />
+  <text x="460" y="360" font-family="Arial" font-size="10" text-anchor="middle" fill="#1e40af">admin</text>
+  
+  <line x1="230" y1="390" x2="490" y2="390" stroke="#e5e7eb" stroke-width="1" />
+  
+  <text x="240" y="420" font-family="Arial" font-size="14" font-weight="bold" fill="#111827">Design Team</text>
+  <text x="240" y="440" font-family="Arial" font-size="12" fill="#6b7280">UI/UX design team</text>
+  <rect x="440" y="415" width="40" height="20" rx="10" fill="#dbeafe" />
+  <text x="460" y="430" font-family="Arial" font-size="10" text-anchor="middle" fill="#1e40af">member</text>
+  
+  <!-- Tasks Card -->
+  <rect x="520" y="270" width="280" height="280" rx="6" fill="white" stroke="#e5e7eb" stroke-width="1" />
+  <text x="540" y="300" font-family="Arial" font-size="16" font-weight="bold" fill="#111827">Your Tasks</text>
+  <line x1="520" y1="320" x2="800" y2="320" stroke="#e5e7eb" stroke-width="1" />
+  
+  <!-- Overdue Tasks -->
+  <text x="540" y="350" font-family="Arial" font-size="12" font-weight="bold" fill="#ef4444">Overdue</text>
+  <rect x="540" y="360" width="240" height="50" rx="4" fill="#fee2e2" stroke="#fecaca" stroke-width="1" />
+  <text x="550" y="380" font-family="Arial" font-size="14" font-weight="bold" fill="#b91c1c">Implement authentication</text>
+  <text x="550" y="400" font-family="Arial" font-size="12" fill="#b91c1c">Development Team</text>
+  <text x="750" y="380" font-family="Arial" font-size="10" text-anchor="end" fill="#b91c1c">Apr 5</text>
+  
+  <!-- Upcoming Tasks -->
+  <text x="540" y="440" font-family="Arial" font-size="12" font-weight="bold" fill="#6b7280">Upcoming</text>
+  <rect x="540" y="450" width="240" height="50" rx="4" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1" />
+  <text x="550" y="470" font-family="Arial" font-size="14" font-weight="bold" fill="#374151">Design UI mockups</text>
+  <text x="550" y="490" font-family="Arial" font-size="12" fill="#6b7280">Design Team</text>
+  <text x="750" y="470" font-family="Arial" font-size="10" text-anchor="end" fill="#6b7280">Apr 12</text>
+</svg>

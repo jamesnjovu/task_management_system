@@ -1,0 +1,40 @@
+# Project structure for the Task Management System frontend with Vite
+client/
+├── public/
+│   ├── favicon.ico
+│   └── robots.txt
+├── src/
+│   ├── assets/           # Images, icons, etc.
+│   ├── components/       # Reusable React components
+│   │   ├── auth/         # Authentication related components
+│   │   ├── common/       # Common UI components
+│   │   ├── dashboard/    # Dashboard components
+│   │   ├── layout/       # Layout components (header, sidebar, etc.)
+│   │   ├── tasks/        # Task related components
+│   │   └── teams/        # Team related components
+│   ├── context/          # React context providers
+│   │   ├── AuthContext.jsx
+│   │   └── AlertContext.jsx
+│   ├── hooks/            # Custom React hooks
+│   ├── pages/            # Page components
+│   │   ├── Auth/
+│   │   ├── Dashboard/
+│   │   ├── TaskBoard/
+│   │   ├── TeamManagement/
+│   │   └── Profile/
+│   ├── services/         # API services
+│   │   ├── authService.js
+│   │   ├── taskService.js
+│   │   └── teamService.js
+│   ├── utils/            # Utility functions
+│   ├── App.jsx           # Main App component
+│   ├── main.jsx          # Entry point
+│   └── routes.jsx        # Application routes
+├── .env                  # Environment variables
+├── .gitignore            # Git ignore file
+├── index.html            # HTML entry point
+├── package.json          # Package configuration
+├── tailwind.config.js    # Tailwind configuration
+├── postcss.config.js     # PostCSS configuration
+├── vite.config.js        # Vite configuration
+└── README.md             # Project documentation

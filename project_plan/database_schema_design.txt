@@ -1,0 +1,50 @@
+Users
+- id (PK)
+- username
+- email
+- password_hash
+- created_at
+- updated_at
+
+Teams
+- id (PK)
+- name
+- description
+- created_by (FK -> Users.id)
+- created_at
+- updated_at
+
+TeamMembers
+- id (PK)
+- team_id (FK -> Teams.id)
+- user_id (FK -> Users.id)
+- role (enum: 'admin', 'member')
+- joined_at
+
+Tasks
+- id (PK)
+- title
+- description
+- status (enum: 'todo', 'in_progress', 'done')
+- priority (enum: 'low', 'medium', 'high')
+- assigned_to (FK -> Users.id, nullable)
+- created_by (FK -> Users.id)
+- team_id (FK -> Teams.id)
+- created_at
+- updated_at
+- due_date
+
+Comments
+- id (PK)
+- task_id (FK -> Tasks.id)
+- user_id (FK -> Users.id)
+- content
+- created_at
+
+Attachments
+- id (PK)
+- task_id (FK -> Tasks.id)
+- file_name
+- file_path
+- uploaded_by (FK -> Users.id)
+- uploaded_at

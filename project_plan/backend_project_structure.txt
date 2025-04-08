@@ -1,0 +1,33 @@
+# Project structure for the Task Management System backend
+├── server/
+│   ├── config/
+│   │   ├── db.js               # Database configuration
+│   │   └── config.js           # General configuration (ports, env variables)
+│   ├── controllers/
+│   │   ├── authController.js   # Authentication controllers
+│   │   ├── userController.js   # User management controllers
+│   │   ├── teamController.js   # Team management controllers
+│   │   └── taskController.js   # Task management controllers
+│   ├── middleware/
+│   │   ├── auth.js             # Authentication middleware
+│   │   ├── errorHandler.js     # Error handling middleware
+│   │   └── validate.js         # Input validation middleware
+│   ├── models/
+│   │   ├── User.js             # User model
+│   │   ├── Team.js             # Team model
+│   │   ├── Task.js             # Task model
+│   │   └── Comment.js          # Comment model
+│   ├── routes/
+│   │   ├── auth.js             # Authentication routes
+│   │   ├── users.js            # User routes
+│   │   ├── teams.js            # Team routes
+│   │   └── tasks.js            # Task routes
+│   ├── utils/
+│   │   ├── logger.js           # Logging utility
+│   │   └── validators.js       # Input validation functions
+│   ├── db/
+│   │   ├── migrations/         # Database migrations
+│   │   └── seeds/              # Seed data for testing
+│   ├── app.js                  # Express application setup
+│   ├── server.js               # Server entry point
+│   └── package.json            # Project dependencies

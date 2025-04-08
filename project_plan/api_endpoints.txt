@@ -1,0 +1,29 @@
+User Management:
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/users/me
+- PUT /api/users/me
+
+Team Management:
+- POST /api/teams
+- GET /api/teams
+- GET /api/teams/:id
+- PUT /api/teams/:id
+- DELETE /api/teams/:id
+- POST /api/teams/:id/members
+- GET /api/teams/:id/members
+- DELETE /api/teams/:id/members/:userId
+
+Task Management:
+- POST /api/tasks
+- GET /api/tasks
+- GET /api/tasks/:id
+- PUT /api/tasks/:id
+- DELETE /api/tasks/:id
+- PUT /api/tasks/:id/status
+- PUT /api/tasks/:id/assign
+
+Comments:
+- POST /api/tasks/:id/comments
+- GET /api/tasks/:id/comments
+- DELETE /api/tasks/:id/comments/:commentId

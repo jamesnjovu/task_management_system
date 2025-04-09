@@ -13,8 +13,13 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const { setAlert } = useAlert();
 
-    // Check if user is authenticated on mount
+    // Configure axios defaults on initial load
     useEffect(() => {
+        // Set the default base URL for axios
+        axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+        // Check if user is authenticated on mount
+
         checkAuth();
     }, []);
 
@@ -80,8 +85,6 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
         } catch (error) {
             console.error('Authentication error:', error);
-            // Don't log out automatically on error during initial load
-            // This prevents logout on network issues or server unavailability
             localStorage.removeItem('token');
             setCurrentUser(null);
             setIsAuthenticated(false);
@@ -122,6 +125,9 @@ export const AuthProvider = ({ children }) => {
             setCurrentUser(res.data.user);
             setIsAuthenticated(true);
 
+            // Force axios to use the new token immediately
+            axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+
             setAlert('Login successful!', 'success');
             return true;
         } catch (error) {
@@ -137,6 +143,7 @@ export const AuthProvider = ({ children }) => {
     // Logout user
     const logout = () => {
         localStorage.removeItem('token');
+        delete axios.defaults.headers.common['Authorization'];
         setCurrentUser(null);
         setIsAuthenticated(false);
     };

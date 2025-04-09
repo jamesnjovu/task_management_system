@@ -1,36 +1,48 @@
+
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FiHome, FiUsers, FiCalendar, FiList, FiPlus, FiX } from 'react-icons/fi';
 import { getMyTeams } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
+import { useAuth } from '../../context/AuthContext';
 import CreateTeamModal from '../teams/CreateTeamModal';
 
 const Sidebar = () => {
     const location = useLocation();
     const { setAlert } = useAlert();
+    const { isAuthenticated } = useAuth();
     const [teams, setTeams] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        fetchTeams();
-    }, []);
+        if (isAuthenticated) {
+            fetchTeams();
+        }
+    }, [isAuthenticated]);
 
     const fetchTeams = async () => {
         try {
             setLoading(true);
+            setError(false);
             const response = await getMyTeams();
             setTeams(response.data);
         } catch (error) {
             console.error('Error fetching teams:', error);
-            setAlert('Failed to load teams', 'error');
+            setError(true);
+            
+            // Only show alert for non-auth related errors
+            if (error.response && error.response.status !== 401) {
+                setAlert('Failed to load teams', 'error');
+            }
         } finally {
             setLoading(false);
         }
     };
 
-    const handleCreateTeam = async (newTeam) => {
+    const handleCreateTeam = async (_newTeam) => {
         setShowModal(false);
         await fetchTeams();
         setAlert('Team created successfully!', 'success');
@@ -91,6 +103,16 @@ const Sidebar = () => {
                             <div className="mt-2 space-y-1">
                                 {loading ? (
                                     <div className="px-4 py-2 text-sm text-gray-600">Loading teams...</div>
+                                ) : error ? (
+                                    <div className="px-4 py-2 text-sm text-gray-600">
+                                        <div className="text-danger-600 mb-2">Failed to load teams</div>
+                                        <button 
+                                            onClick={fetchTeams}
+                                            className="text-primary-600 hover:text-primary-700 underline text-xs"
+                                        >
+                                            Try again
+                                        </button>
+                                    </div>
                                 ) : teams.length === 0 ? (
                                     <div className="px-4 py-2 text-sm text-gray-600">No teams yet</div>
                                 ) : (

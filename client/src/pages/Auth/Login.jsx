@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/AuthContext';
 import FormInput from '../../components/common/FormInput';
 import Button from '../../components/common/Button';
 
 const Login = () => {
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
 
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            await login(data);
+            const success = await login(data);
+            if (success) {
+                // Successfully logged in, we'll be redirected by the useEffect
+            }
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">

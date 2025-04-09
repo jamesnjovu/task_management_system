@@ -92,7 +92,8 @@ const CreateTaskModal = ({ teamId, status = 'todo', onClose, onTaskCreated }) =>
                                             <input
                                                 type="text"
                                                 id="title"
-                                                className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${errors.title ? 'border-danger-300 focus:ring-danger-500 focus:border-danger-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                                                placeholder="Enter Title"
+                                                className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2  ${errors.title ? 'border-danger-300 focus:ring-danger-500 focus:border-danger-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
                                                     }`}
                                                 {...register('title', {
                                                     required: 'Title is required',
@@ -119,7 +120,7 @@ const CreateTaskModal = ({ teamId, status = 'todo', onClose, onTaskCreated }) =>
                                             <textarea
                                                 id="description"
                                                 rows={3}
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                 placeholder="Add a description for this task..."
                                                 {...register('description', {
                                                     maxLength: {
@@ -141,7 +142,7 @@ const CreateTaskModal = ({ teamId, status = 'todo', onClose, onTaskCreated }) =>
                                                 </label>
                                                 <select
                                                     id="status"
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                    className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                     {...register('status', { required: true })}
                                                     disabled={loading}
                                                 >
@@ -157,7 +158,7 @@ const CreateTaskModal = ({ teamId, status = 'todo', onClose, onTaskCreated }) =>
                                                 </label>
                                                 <select
                                                     id="priority"
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                    className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                     {...register('priority', { required: true })}
                                                     disabled={loading}
                                                 >
@@ -173,7 +174,7 @@ const CreateTaskModal = ({ teamId, status = 'todo', onClose, onTaskCreated }) =>
                                                 </label>
                                                 <select
                                                     id="assignedTo"
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                    className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                     {...register('assignedTo')}
                                                     disabled={loading}
                                                 >
@@ -193,7 +194,7 @@ const CreateTaskModal = ({ teamId, status = 'todo', onClose, onTaskCreated }) =>
                                                 <input
                                                     type="date"
                                                     id="dueDate"
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                    className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                     {...register('dueDate')}
                                                     disabled={loading}
                                                 />

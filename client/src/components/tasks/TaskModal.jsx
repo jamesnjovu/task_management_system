@@ -237,7 +237,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                         <input
                                             type="text"
                                             id="title"
-                                            className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${errors.title ? 'border-danger-300 focus:ring-danger-500 focus:border-danger-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                                            className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2  ${errors.title ? 'border-danger-300 focus:ring-danger-500 focus:border-danger-500' : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
                                                 }`}
                                             {...register('title', { required: 'Title is required' })}
                                             disabled={loading}
@@ -254,7 +254,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                         <textarea
                                             id="description"
                                             rows={3}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                             {...register('description')}
                                             disabled={loading}
                                         ></textarea>
@@ -267,7 +267,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                             </label>
                                             <select
                                                 id="status"
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                 {...register('status', { required: true })}
                                                 disabled={loading}
                                             >
@@ -283,7 +283,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                             </label>
                                             <select
                                                 id="priority"
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                 {...register('priority', { required: true })}
                                                 disabled={loading}
                                             >
@@ -299,7 +299,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                             </label>
                                             <select
                                                 id="assigned_to"
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                 {...register('assigned_to')}
                                                 disabled={loading}
                                             >
@@ -319,7 +319,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                             <input
                                                 type="date"
                                                 id="due_date"
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                                 {...register('due_date')}
                                                 disabled={loading}
                                             />
@@ -401,7 +401,7 @@ const TaskModal = ({ taskId, teamId, onClose, onUpdate, onDelete }) => {
                                     <div className="flex items-center">
                                         <input
                                             type="text"
-                                            className="flex-1 rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                            className="flex-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm px-3 py-2 "
                                             placeholder="Add a comment..."
                                             {...commentForm.register('content', {
                                                 required: 'Comment cannot be empty',

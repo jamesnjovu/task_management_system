@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FiHome, FiUsers, FiCalendar, FiList, FiPlus, FiX } from 'react-icons/fi';
@@ -61,15 +60,19 @@ const Sidebar = () => {
 
     return (
         <>
+            {/* Mobile overlay */}
             <div
-                className={`md:block fixed inset-0 z-20 transition-opacity bg-gray-600 bg-opacity-75 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                    } md:hidden`}
+                className={`md:hidden fixed inset-0 z-20 transition-opacity bg-gray-600 bg-opacity-75 ${
+                    isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                }`}
                 onClick={() => setIsOpen(false)}
             ></div>
 
+            {/* Sidebar */}
             <div
-                className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform md:translate-x-0 md:relative md:shadow-none ${isOpen ? 'translate-x-0' : '-translate-x-full'
-                    }`}
+                className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform md:translate-x-0 md:relative md:shadow-none ${
+                    isOpen ? 'translate-x-0' : '-translate-x-full'
+                } md:block md:h-full h-screen overflow-hidden`}
             >
                 <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 md:hidden">
                     <h2 className="text-lg font-medium text-gray-900">Menu</h2>
@@ -83,7 +86,7 @@ const Sidebar = () => {
                     </button>
                 </div>
 
-                <div className="h-0 flex-1 flex flex-col overflow-y-auto pt-5 pb-4">
+                <div className="h-full flex-1 flex flex-col overflow-y-auto pt-5 pb-4">
                     <nav className="flex-1 px-2 space-y-1">
                         <NavLink to="/dashboard" className={navLinkClasses}>
                             <FiHome className="mr-3 h-5 w-5 text-gray-500" />

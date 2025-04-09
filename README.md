@@ -56,7 +56,7 @@ A web-based task management system that allows teams to create, assign, and trac
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/task-management-system.git
+   git clone https://github.com/jamesnjovu/task_management_system.git
    cd task-management-system
    ```
 

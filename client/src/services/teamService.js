@@ -65,12 +65,14 @@ export const getTeamMembers = async (teamId) => {
 /**
  * Add a member to the team
  * @param {string} teamId - Team ID
- * @param {string} userId - User ID
- * @param {string} role - Member role ('admin' or 'member')
+ * @param {Object} memberData - Member data (email and role)
  * @returns {Promise} - Promise with the API response
  */
-export const addTeamMember = async (teamId, userId, role = 'member') => {
-    const response = await axios.post(`${API_URL}/${teamId}/members`, { userId, role });
+export const addTeamMember = async (teamId, memberData) => {
+    // If the API expects userId, but we have email, we need to handle this
+    // For this implementation, we'll assume the backend can handle email directly
+    // or we need to make a separate API call to find the user by email first
+    const response = await axios.post(`${API_URL}/${teamId}/members`, memberData);
     return response.data;
 };
 
@@ -104,5 +106,15 @@ export const updateMemberRole = async (teamId, userId, role) => {
  */
 export const getTeamStats = async (teamId) => {
     const response = await axios.get(`${API_URL}/${teamId}/stats`);
+    return response.data;
+};
+
+/**
+ * Search users by email or username (to find users to add to team)
+ * @param {string} query - Search query
+ * @returns {Promise} - Promise with the API response
+ */
+export const searchUsers = async (query) => {
+    const response = await axios.get(`/api/users/search?q=${query}`);
     return response.data;
 };

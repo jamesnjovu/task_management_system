@@ -52,6 +52,7 @@ const Login = () => {
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label="Email Address"
+                            placeholder="Enter Email Address"
                             type="email"
                             {...register('email', {
                                 required: 'Email is required',
@@ -67,6 +68,7 @@ const Login = () => {
 
                         <FormInput
                             label="Password"
+                            placeholder="Enter Your Password"
                             type="password"
                             {...register('password', {
                                 required: 'Password is required',

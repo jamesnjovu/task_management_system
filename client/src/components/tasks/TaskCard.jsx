@@ -1,11 +1,12 @@
-import React, { useRef, memo } from 'react';
+import React, { useRef, memo, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { FiClock, FiPaperclip, FiMessageSquare } from 'react-icons/fi';
 import { format } from 'date-fns';
 
 // Using React.memo to prevent unnecessary re-renders
-const TaskCard = memo(({ task, index, onClick, moveTask, columnId }) => {
+const TaskCard = memo(({ task, index, onClick, moveTask, columnId, isNew = false }) => {
     const ref = useRef(null);
+    const [isHovered, setIsHovered] = useState(false);
 
     // Setup drag source
     const [{ isDragging }, drag] = useDrag({
@@ -131,14 +132,24 @@ const TaskCard = memo(({ task, index, onClick, moveTask, columnId }) => {
         }
     };
 
+    // Determine the animation classes
+    const animationClasses = [
+        isNew ? 'task-card-new' : '',
+        isDragging ? 'opacity-50 shadow-lg scale-105' : '',
+        isHovered ? 'hover:shadow-md transform hover:-translate-y-1' : '',
+        isOver ? 'ring-2 ring-primary-300' : ''
+    ].filter(Boolean).join(' ');
+
     return (
         <div
             ref={ref}
-            className={`task-card ${isDragging ? 'opacity-50' : ''}`}
+            className={`task-card ${animationClasses}`}
             onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             style={{ 
-                opacity: isDragging ? 0.5 : 1,
-                cursor: 'move'
+                cursor: 'move',
+                transition: 'all 0.2s ease-in-out'
             }}
         >
             <h3 className="task-card-title">{task.title}</h3>
@@ -185,10 +196,10 @@ const TaskCard = memo(({ task, index, onClick, moveTask, columnId }) => {
                                     <img
                                         src={task.assignee.avatar_url}
                                         alt={task.assignee.username}
-                                        className="h-6 w-6 rounded-full"
+                                        className="h-6 w-6 rounded-full transition-transform duration-300 hover:scale-110"
                                     />
                                 ) : (
-                                    <div className="h-6 w-6 rounded-full bg-primary-600 flex items-center justify-center text-white text-xs">
+                                    <div className="h-6 w-6 rounded-full bg-primary-600 flex items-center justify-center text-white text-xs transition-transform duration-300 hover:scale-110">
                                         {task.assignee.username.charAt(0).toUpperCase()}
                                     </div>
                                 )}
@@ -202,6 +213,16 @@ const TaskCard = memo(({ task, index, onClick, moveTask, columnId }) => {
                     )}
                 </div>
             </div>
+            
+            {/* Subtle glow animation when task is being dragged over */}
+            {isOver && (
+                <div className="absolute inset-0 bg-primary-100 opacity-30 rounded-md pointer-events-none"></div>
+            )}
+            
+            {/* Show a pulse animation when the card is new */}
+            {isNew && (
+                <div className="absolute inset-0 bg-primary-50 opacity-30 rounded-md pointer-events-none animate-pulse"></div>
+            )}
         </div>
     );
 });

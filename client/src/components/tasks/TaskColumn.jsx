@@ -11,14 +11,30 @@ const TaskColumn = ({
     onTaskClick,
     moveTask
 }) => {
-    // Setup drop target for this column
+    // Setup drop target for the whole column
     const [{ isOver }, drop] = useDrop({
         accept: 'TASK',
-        drop: () => ({ 
-            columnId: columnId 
-        }),
+        drop: (item) => {
+            // If the item comes from another column, add it to the end of this column
+            if (item.sourceStatus !== columnId) {
+                return { columnId };
+            }
+            return undefined; // Let individual cards handle reordering
+        },
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
+        }),
+    });
+
+    // Setup drop target for the empty space at the bottom
+    const [{ isOverBottom }, dropBottom] = useDrop({
+        accept: 'TASK',
+        drop: () => ({ 
+            columnId,
+            index: tasks.length // Drop at the end of the list
+        }),
+        collect: (monitor) => ({
+            isOverBottom: !!monitor.isOver(),
         }),
     });
 
@@ -37,7 +53,7 @@ const TaskColumn = ({
                 </button>
             </div>
 
-            {/* Drop area for tasks */}
+            {/* Drop area for tasks - make the entire column droppable */}
             <div 
                 ref={drop}
                 className={`task-list ${isOver ? 'bg-gray-100' : ''}`}
@@ -49,8 +65,16 @@ const TaskColumn = ({
                         index={index}
                         onClick={() => onTaskClick(task)}
                         moveTask={moveTask}
+                        columnId={columnId}
                     />
                 ))}
+                
+                {/* Empty drop target at the bottom - will catch drops when the list is empty or when dropping at the end */}
+                <div 
+                    ref={dropBottom}
+                    className={`flex-grow min-h-16 ${isOverBottom ? 'bg-blue-50' : ''}`}
+                    style={{ minHeight: tasks.length === 0 ? '100px' : '30px' }}
+                ></div>
             </div>
         </div>
     );

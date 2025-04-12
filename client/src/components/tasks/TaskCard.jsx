@@ -3,7 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { FiClock, FiPaperclip, FiMessageSquare } from 'react-icons/fi';
 import { format } from 'date-fns';
 
-const TaskCard = ({ task, index, onClick, moveTask }) => {
+const TaskCard = ({ task, index, onClick, moveTask, columnId }) => {
     const ref = useRef(null);
 
     // Setup drag source
@@ -14,26 +14,45 @@ const TaskCard = ({ task, index, onClick, moveTask }) => {
             index,
             sourceStatus: task.status
         }),
-        end: (item, monitor) => {
-            const dropResult = monitor.getDropResult();
-            if (dropResult && item.sourceStatus !== dropResult.columnId) {
-                // Call moveTask function with task id and new status
-                moveTask(item.id, dropResult.columnId);
-            }
-        },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
+        end: (item, monitor) => {
+            const dropResult = monitor.getDropResult();
+            
+            if (!dropResult) return;
+            
+            // Handle moving to a different column
+            if (item.sourceStatus !== dropResult.columnId) {
+                moveTask(item.id, dropResult.columnId);
+                return;
+            }
+            
+            // Handle reordering within the same column
+            if (dropResult.index !== undefined && dropResult.index !== item.index) {
+                moveTask(item.id, item.sourceStatus, item.index, dropResult.index);
+            }
+        },
     });
 
     // Setup drop ref (for reordering within the same list)
-    const [, drop] = useDrop({
+    const [{ isOver }, drop] = useDrop({
         accept: 'TASK',
         hover(item, monitor) {
             if (!ref.current) {
                 return;
             }
             
+            // Don't replace items with themselves
+            if (item.id === task.id) {
+                return;
+            }
+            
+            // Only handle if we're in the same column
+            if (item.sourceStatus !== task.status) {
+                return;
+            }
+
             const dragIndex = item.index;
             const hoverIndex = index;
             
@@ -42,15 +61,44 @@ const TaskCard = ({ task, index, onClick, moveTask }) => {
                 return;
             }
             
-            // Only perform the move when we hover over a different item
-            // and only when the items are in the same column
-            if (moveTask && item.sourceStatus === task.status) {
-                moveTask(item.id, task.status, dragIndex, hoverIndex);
-                
-                // Update the index for the dragged item
-                item.index = hoverIndex;
+            // Get rectangle on screen
+            const hoverBoundingRect = ref.current.getBoundingClientRect();
+            
+            // Get vertical middle
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            
+            // Get mouse position
+            const clientOffset = monitor.getClientOffset();
+            
+            // Get pixels to the top
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            
+            // Only perform the move when the mouse has crossed half of the item's height
+            // When dragging downwards, only move when the cursor is below 50%
+            // When dragging upwards, only move when the cursor is above 50%
+            
+            // Dragging downwards
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
             }
+            
+            // Dragging upwards
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+            
+            // Time to actually perform the action
+            item.index = hoverIndex;
         },
+        drop: () => {
+            return {
+                columnId: task.status,
+                index: index
+            };
+        },
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+        }),
     });
 
     // Apply refs to make the element both draggable and a drop target

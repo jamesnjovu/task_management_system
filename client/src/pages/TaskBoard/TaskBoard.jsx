@@ -70,6 +70,7 @@ const TaskBoard = () => {
         // Find the task in all columns
         let taskToMove = null;
         let currentStatus = null;
+        let oldIndex = -1;
         
         // Search for the task in all columns
         for (const status in newTasks) {
@@ -77,19 +78,22 @@ const TaskBoard = () => {
             if (taskIndex !== -1) {
                 taskToMove = { ...newTasks[status][taskIndex] };
                 currentStatus = status;
+                oldIndex = taskIndex;
                 
                 // If we're just reordering within the same list
                 if (sourceIndex !== undefined && targetIndex !== undefined && currentStatus === newStatus) {
+                    console.log(`Reordering task ${taskId} from index ${sourceIndex} to ${targetIndex}`);
+                    
                     // Remove from current position
                     const column = [...newTasks[status]];
-                    column.splice(sourceIndex, 1);
+                    column.splice(oldIndex, 1);
                     
                     // Insert at new position
                     column.splice(targetIndex, 0, taskToMove);
                     
                     // Update the state
                     newTasks[status] = column;
-                    setTasks(newTasks);
+                    setTasks({...newTasks});
                     
                     try {
                         // Get all task IDs in their new order
@@ -112,10 +116,15 @@ const TaskBoard = () => {
             }
         }
         
-        if (!taskToMove) return;
+        if (!taskToMove) {
+            console.error('Task not found:', taskId);
+            return;
+        }
         
         // If status has changed
         if (currentStatus !== newStatus) {
+            console.log(`Moving task ${taskId} from ${currentStatus} to ${newStatus}`);
+            
             try {
                 // Update task status in the backend
                 await updateTaskStatus(taskId, newStatus);
@@ -123,17 +132,24 @@ const TaskBoard = () => {
                 // Update the task object with the new status
                 taskToMove.status = newStatus;
                 
-                // Add the task to its new column
-                newTasks[newStatus].push(taskToMove);
+                // Add the task to its new column at the specific index if provided,
+                // otherwise add to the end
+                if (targetIndex !== undefined) {
+                    newTasks[newStatus].splice(targetIndex, 0, taskToMove);
+                } else {
+                    newTasks[newStatus].push(taskToMove);
+                }
                 
                 // Update state
-                setTasks(newTasks);
+                setTasks({...newTasks});
+                
+                setAlert(`Task moved to ${newStatus.replace('_', ' ')}`, 'success');
             } catch (error) {
                 console.error('Error updating task status:', error);
                 setAlert('Failed to update task status', 'error');
                 
                 // Revert the changes in case of error
-                newTasks[currentStatus].push(taskToMove);
+                newTasks[currentStatus].splice(oldIndex, 0, taskToMove);
                 setTasks({ ...newTasks });
             }
         }

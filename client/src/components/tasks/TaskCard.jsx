@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { FiClock, FiPaperclip, FiMessageSquare } from 'react-icons/fi';
 import { format } from 'date-fns';
 
-const TaskCard = ({ task, index, onClick, moveTask, columnId }) => {
+// Using React.memo to prevent unnecessary re-renders
+const TaskCard = memo(({ task, index, onClick, moveTask, columnId }) => {
     const ref = useRef(null);
 
     // Setup drag source
@@ -135,7 +136,10 @@ const TaskCard = ({ task, index, onClick, moveTask, columnId }) => {
             ref={ref}
             className={`task-card ${isDragging ? 'opacity-50' : ''}`}
             onClick={onClick}
-            style={{ opacity: isDragging ? 0.5 : 1 }}
+            style={{ 
+                opacity: isDragging ? 0.5 : 1,
+                cursor: 'move'
+            }}
         >
             <h3 className="task-card-title">{task.title}</h3>
 
@@ -200,6 +204,9 @@ const TaskCard = ({ task, index, onClick, moveTask, columnId }) => {
             </div>
         </div>
     );
-};
+});
+
+// Add a displayName for better debugging
+TaskCard.displayName = 'TaskCard';
 
 export default TaskCard;

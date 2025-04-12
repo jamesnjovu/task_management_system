@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useDrop } from 'react-dnd';
 import { FiPlus } from 'react-icons/fi';
 import TaskCard from './TaskCard';
 
-const TaskColumn = ({
+// Using React.memo to prevent unnecessary re-renders
+const TaskColumn = memo(({
     columnId,
     title,
     tasks,
@@ -57,6 +58,7 @@ const TaskColumn = ({
             <div 
                 ref={drop}
                 className={`task-list ${isOver ? 'bg-gray-100' : ''}`}
+                style={{ transition: 'background-color 0.2s ease' }}
             >
                 {tasks.map((task, index) => (
                     <TaskCard
@@ -73,11 +75,17 @@ const TaskColumn = ({
                 <div 
                     ref={dropBottom}
                     className={`flex-grow min-h-16 ${isOverBottom ? 'bg-blue-50' : ''}`}
-                    style={{ minHeight: tasks.length === 0 ? '100px' : '30px' }}
+                    style={{ 
+                        minHeight: tasks.length === 0 ? '100px' : '30px',
+                        transition: 'background-color 0.2s ease'
+                    }}
                 ></div>
             </div>
         </div>
     );
-};
+});
+
+// Add a displayName for better debugging
+TaskColumn.displayName = 'TaskColumn';
 
 export default TaskColumn;

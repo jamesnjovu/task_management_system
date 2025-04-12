@@ -82,30 +82,25 @@ const TaskBoard = () => {
                 
                 // If we're just reordering within the same list
                 if (sourceIndex !== undefined && targetIndex !== undefined && currentStatus === newStatus) {
-                    console.log(`Reordering task ${taskId} from index ${sourceIndex} to ${targetIndex}`);
-                    
-                    // Remove from current position
+                    // Remove from current position and insert at new position without triggering loading state
                     const column = [...newTasks[status]];
                     column.splice(oldIndex, 1);
-                    
-                    // Insert at new position
                     column.splice(targetIndex, 0, taskToMove);
                     
-                    // Update the state
+                    // Update the state immediately without setting loading=true
                     newTasks[status] = column;
                     setTasks({...newTasks});
                     
-                    try {
-                        // Get all task IDs in their new order
-                        const taskIds = column.map(task => task.id);
-                        
-                        // Update task order in the backend
-                        await reorderTasks(teamId, status, taskIds);
-                    } catch (error) {
-                        console.error('Error reordering tasks:', error);
-                        setAlert('Failed to reorder tasks', 'error');
-                        // We're not reverting the UI here to avoid flickering
-                    }
+                    // Update backend in the background without blocking UI
+                    (async () => {
+                        try {
+                            const taskIds = column.map(task => task.id);
+                            await reorderTasks(teamId, status, taskIds);
+                        } catch (error) {
+                            console.error('Error reordering tasks:', error);
+                            setAlert('Failed to reorder tasks', 'error');
+                        }
+                    })();
                     
                     return;
                 }
@@ -123,35 +118,47 @@ const TaskBoard = () => {
         
         // If status has changed
         if (currentStatus !== newStatus) {
-            console.log(`Moving task ${taskId} from ${currentStatus} to ${newStatus}`);
+            // Update UI immediately without waiting for API response
+            taskToMove.status = newStatus;
             
-            try {
-                // Update task status in the backend
-                await updateTaskStatus(taskId, newStatus);
-                
-                // Update the task object with the new status
-                taskToMove.status = newStatus;
-                
-                // Add the task to its new column at the specific index if provided,
-                // otherwise add to the end
-                if (targetIndex !== undefined) {
-                    newTasks[newStatus].splice(targetIndex, 0, taskToMove);
-                } else {
-                    newTasks[newStatus].push(taskToMove);
-                }
-                
-                // Update state
-                setTasks({...newTasks});
-                
-                setAlert(`Task moved to ${newStatus.replace('_', ' ')}`, 'success');
-            } catch (error) {
-                console.error('Error updating task status:', error);
-                setAlert('Failed to update task status', 'error');
-                
-                // Revert the changes in case of error
-                newTasks[currentStatus].splice(oldIndex, 0, taskToMove);
-                setTasks({ ...newTasks });
+            // Add the task to its new column at the specific index if provided, otherwise add to the end
+            if (targetIndex !== undefined) {
+                newTasks[newStatus].splice(targetIndex, 0, taskToMove);
+            } else {
+                newTasks[newStatus].push(taskToMove);
             }
+            
+            // Update state immediately
+            setTasks({...newTasks});
+            
+            // Then update backend in the background
+            (async () => {
+                try {
+                    await updateTaskStatus(taskId, newStatus);
+                } catch (error) {
+                    console.error('Error updating task status:', error);
+                    setAlert('Failed to update task status', 'error');
+                    
+                    // Revert the UI on error
+                    setTasks(prevTasks => {
+                        const revertTasks = { ...prevTasks };
+                        // Find and remove the task from its new column
+                        const taskToRevert = revertTasks[newStatus].find(t => t.id === taskId);
+                        if (taskToRevert) {
+                            revertTasks[newStatus] = revertTasks[newStatus].filter(t => t.id !== taskId);
+                            // Restore original status
+                            taskToRevert.status = currentStatus;
+                            // Add back to original column at original position if possible
+                            if (oldIndex >= 0 && oldIndex <= revertTasks[currentStatus].length) {
+                                revertTasks[currentStatus].splice(oldIndex, 0, taskToRevert);
+                            } else {
+                                revertTasks[currentStatus].push(taskToRevert);
+                            }
+                        }
+                        return revertTasks;
+                    });
+                }
+            })();
         }
     };
 

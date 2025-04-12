@@ -118,3 +118,59 @@ export const searchUsers = async (query) => {
     const response = await axios.get(`/api/users/search?q=${query}`);
     return response.data;
 };
+
+/**
+ * Check if user is a team admin
+ * @param {string} teamId - Team ID 
+ * @returns {Promise<boolean>} - Promise resolving to boolean indicating if user is admin
+ */
+export const isTeamAdmin = async (teamId) => {
+    try {
+        const response = await getTeamById(teamId);
+        return response.data?.role === 'admin';
+    } catch (error) {
+        console.error('Error checking team admin status:', error);
+        return false;
+    }
+};
+
+/**
+ * Get team role counts
+ * @param {string} teamId - Team ID
+ * @returns {Promise} - Promise with role count data
+ */
+export const getTeamRoleCounts = async (teamId) => {
+    try {
+        const response = await getTeamMembers(teamId);
+        const members = response.data || [];
+
+        // Count members by role
+        const counts = members.reduce((acc, member) => {
+            acc[member.role] = (acc[member.role] || 0) + 1;
+            return acc;
+        }, { admin: 0, member: 0 });
+
+        return {
+            total: members.length,
+            ...counts
+        };
+    } catch (error) {
+        console.error('Error getting team role counts:', error);
+        return { total: 0, admin: 0, member: 0 };
+    }
+};
+
+/**
+ * Invite users to team by email
+ * @param {string} teamId - Team ID
+ * @param {Array<string>} emails - Array of email addresses
+ * @param {string} role - Role to assign ('admin' or 'member')
+ * @returns {Promise} - Promise with the API response
+ */
+export const inviteTeamMembers = async (teamId, emails, role = 'member') => {
+    const response = await axios.post(`${API_URL}/${teamId}/invites`, {
+        emails,
+        role
+    });
+    return response.data;
+};

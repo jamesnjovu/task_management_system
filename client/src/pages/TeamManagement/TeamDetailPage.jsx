@@ -158,14 +158,15 @@ const TeamDetailPage = () => {
                                         View Task Board
                                     </Button>
                                 </Link>
-                                <Button
-                                    variant="outline"
-                                    fullWidth
-                                    onClick={() => setActiveTab('members')}
-                                    icon={<FiUsers />}
-                                >
-                                    Manage Team Members
-                                </Button>
+                                <Link to={`/teams/${teamId}/members`}>
+                                    <Button
+                                        variant="outline"
+                                        fullWidth
+                                        icon={<FiUsers />}
+                                    >
+                                        Manage Team Members
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>

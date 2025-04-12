@@ -15,6 +15,8 @@ import TaskBoard from './pages/TaskBoard/TaskBoard'
 import TeamManagement from './pages/TeamManagement/TeamManagement'
 import Profile from './pages/Profile/Profile'
 import NotFound from './pages/NotFound'
+import TeamMemberManagement from './pages/TeamManagement/TeamMemberManagement'
+
 
 function App() {
   const { isAuthenticated, loading, checkAuth } = useAuth();
@@ -94,6 +96,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <TeamManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/teams/:teamId/members"
+                  element={
+                    <ProtectedRoute>
+                      <TeamMemberManagement />
                     </ProtectedRoute>
                   }
                 />

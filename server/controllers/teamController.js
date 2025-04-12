@@ -339,3 +339,34 @@ exports.getTeamStats = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * @desc    Get current user's role in a team
+ * @route   GET /api/teams/:id/role
+ * @access  Private
+ */
+exports.getCurrentUserRole = async (req, res, next) => {
+    try {
+        // Check if team exists
+        const team = await Team.findById(req.params.id);
+        if (!team) {
+            return next(new AppError('Team not found', 404));
+        }
+
+        // Check if user is a member of the team
+        const teamMember = await Team.isMember(team.id, req.user.id);
+        if (!teamMember) {
+            return next(new AppError('You are not a member of this team', 403));
+        }
+
+        // Return user's role
+        res.status(200).json({
+            success: true,
+            data: {
+                role: teamMember.role
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};

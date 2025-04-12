@@ -1,8 +1,10 @@
+// src/pages/TeamManagement/TeamMemberManagement.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { FiPlus, FiSettings, FiUserX, FiShield, FiUser, FiMail, FiSearch } from 'react-icons/fi';
-import { getTeamById, getTeamMembers } from '../../services/teamService';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { FiPlus, FiSettings, FiUserX, FiShield, FiUser, FiMail, FiSearch, FiArrowLeft } from 'react-icons/fi';
+import { getTeamById, getTeamMembers, getCurrentUserTeamRole, removeTeamMember } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
+import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import FormInput from '../../components/common/FormInput';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -14,6 +16,7 @@ const TeamMemberManagement = () => {
     const { teamId } = useParams();
     const navigate = useNavigate();
     const { setAlert } = useAlert();
+    const { currentUser } = useAuth();
 
     const [team, setTeam] = useState(null);
     const [members, setMembers] = useState([]);
@@ -25,6 +28,7 @@ const TeamMemberManagement = () => {
     const [showRoleModal, setShowRoleModal] = useState(false);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const [removingMember, setRemovingMember] = useState(false);
 
     useEffect(() => {
         fetchTeamData();
@@ -33,16 +37,15 @@ const TeamMemberManagement = () => {
     const fetchTeamData = async () => {
         try {
             setLoading(true);
-            const [teamResponse, membersResponse] = await Promise.all([
-                getTeamById(teamId),
-                getTeamMembers(teamId)
-            ]);
+        const [teamResponse, membersResponse, roleResponse] = await Promise.all([
+            getTeamById(teamId),
+            getTeamMembers(teamId),
+            getCurrentUserTeamRole(teamId)
+        ]);
 
-            setTeam(teamResponse.data);
-            setMembers(membersResponse.data);
-
-            // Check if current user is an admin
-            setIsAdmin(teamResponse.data.role === 'admin');
+        setTeam(teamResponse.data);
+        setMembers(membersResponse.data);
+        setIsAdmin(roleResponse.data.role === 'admin');
         } catch (error) {
             console.error('Error fetching team data:', error);
             setAlert('Failed to load team data', 'error');
@@ -78,10 +81,26 @@ const TeamMemberManagement = () => {
         setShowRemoveModal(true);
     };
 
-    const handleMemberRemoved = () => {
-        setShowRemoveModal(false);
-        fetchTeamData();
-        setAlert('Team member removed successfully', 'success');
+    const confirmRemoveMember = async () => {
+        if (!selectedMember) return;
+        
+        setRemovingMember(true);
+        try {
+            await removeTeamMember(teamId, selectedMember.id);
+            setShowRemoveModal(false);
+            fetchTeamData();
+            setAlert('Member removed successfully', 'success');
+        } catch (error) {
+            console.error('Error removing team member:', error);
+            const errorMessage =
+                error.response?.data?.message ||
+                'Failed to remove team member. Please try again.';
+
+            setAlert(errorMessage, 'error');
+        } finally {
+            setRemovingMember(false);
+            setSelectedMember(null);
+        }
     };
 
     const filteredMembers = members.filter(member => {
@@ -106,6 +125,13 @@ const TeamMemberManagement = () => {
 
     return (
         <div className="container mx-auto px-4 py-6">
+            <div className="mb-4">
+                <Link to={`/teams/${teamId}`} className="flex items-center text-gray-600 hover:text-gray-900">
+                    <FiArrowLeft className="mr-2" />
+                    Back to Team
+                </Link>
+            </div>
+            
             <div className="mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">{team?.name} - Team Members</h1>
                 <p className="text-gray-600 mt-1">{team?.description}</p>
@@ -275,8 +301,9 @@ const TeamMemberManagement = () => {
                     message={`Are you sure you want to remove ${selectedMember.username} from the team? This action cannot be undone.`}
                     confirmText="Remove"
                     confirmVariant="danger"
-                    onConfirm={handleMemberRemoved}
+                    onConfirm={confirmRemoveMember}
                     onCancel={() => setShowRemoveModal(false)}
+                    isLoading={removingMember}
                 />
             )}
         </div>

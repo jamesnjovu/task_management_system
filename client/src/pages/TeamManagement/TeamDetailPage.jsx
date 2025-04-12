@@ -1,10 +1,12 @@
+// src/pages/TeamManagement/TeamDetailPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiEdit2, FiTrash2, FiUsers } from 'react-icons/fi';
-import { getTeamById, deleteTeam } from '../../services/teamService';
+import { getTeamById, deleteTeam , getCurrentUserTeamRole} from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
 import Button from '../../components/common/Button';
 import TeamMembersView from '../../components/teams/TeamMembersView';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const TeamDetailPage = () => {
     const { teamId } = useParams();
@@ -22,11 +24,15 @@ const TeamDetailPage = () => {
     const fetchTeamDetails = async () => {
         try {
             setLoading(true);
-            const response = await getTeamById(teamId);
+
+            const [response, roleResponse] = await Promise.all([
+                getTeamById(teamId),
+                getCurrentUserTeamRole(teamId)
+            ]);
             setTeam(response.data);
-            
-            // Check if current user is an admin of this team
-            setIsAdmin(response.data.role === 'admin');
+
+
+            setIsAdmin(roleResponse.data.role === 'admin');
         } catch (error) {
             console.error('Error fetching team details:', error);
             setAlert('Failed to load team details', 'error');
@@ -52,7 +58,7 @@ const TeamDetailPage = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-64">
-                <div className="loading-spinner" />
+                <LoadingSpinner size="medium" />
             </div>
         );
     }
@@ -73,17 +79,9 @@ const TeamDetailPage = () => {
                         <p className="text-gray-600 mt-1">{team.description}</p>
                     )}
                 </div>
-                
+
                 {isAdmin && (
                     <div className="flex space-x-2">
-                        <Link to={`/teams/${teamId}/edit`}>
-                            <Button
-                                variant="outline"
-                                icon={<FiEdit2 />}
-                            >
-                                Edit Team
-                            </Button>
-                        </Link>
                         <Button
                             variant="danger"
                             icon={<FiTrash2 />}
@@ -99,21 +97,19 @@ const TeamDetailPage = () => {
             <div className="border-b border-gray-200 mb-6">
                 <nav className="-mb-px flex space-x-8">
                     <button
-                        className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                            activeTab === 'details'
+                        className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'details'
                                 ? 'border-primary-500 text-primary-600'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        }`}
+                            }`}
                         onClick={() => setActiveTab('details')}
                     >
                         Details
                     </button>
                     <button
-                        className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
-                            activeTab === 'members'
+                        className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${activeTab === 'members'
                                 ? 'border-primary-500 text-primary-600'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        }`}
+                            }`}
                         onClick={() => setActiveTab('members')}
                     >
                         <FiUsers className="mr-2" />
@@ -138,11 +134,10 @@ const TeamDetailPage = () => {
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500">Your Role</p>
-                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
-                                    team.role === 'admin' 
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${team.role === 'admin'
                                         ? 'bg-primary-100 text-primary-800'
                                         : 'bg-gray-100 text-gray-800'
-                                }`}>
+                                    }`}>
                                     {team.role}
                                 </span>
                             </div>
@@ -172,9 +167,9 @@ const TeamDetailPage = () => {
                     </div>
                 </div>
             ) : (
-                <TeamMembersView 
-                    teamId={teamId} 
-                    isAdmin={isAdmin} 
+                <TeamMembersView
+                    teamId={teamId}
+                    isAdmin={isAdmin}
                 />
             )}
         </div>

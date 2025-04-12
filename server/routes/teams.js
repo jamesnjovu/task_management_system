@@ -9,7 +9,8 @@ const {
     addTeamMember,
     removeTeamMember,
     updateMemberRole,
-    getTeamStats
+    getTeamStats,
+    getCurrentUserRole,
 } = require('../controllers/teamController');
 const { protect } = require('../middleware/auth');
 const { validate } = require('../middleware/validate');
@@ -27,6 +28,7 @@ router.get('/:id', getTeamById);
 router.put('/:id', validate(validators.team.update), updateTeam);
 router.delete('/:id', deleteTeam);
 router.get('/:id/stats', getTeamStats);
+router.get('/:id/role', getCurrentUserRole);
 
 // Team member routes
 router.get('/:id/members', getTeamMembers);

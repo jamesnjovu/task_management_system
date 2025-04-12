@@ -174,3 +174,13 @@ export const inviteTeamMembers = async (teamId, emails, role = 'member') => {
     });
     return response.data;
 };
+
+/**
+ * Get the current user's role in a team
+ * @param {string} teamId - Team ID
+ * @returns {Promise} - Promise with the API response containing user's team role
+ */
+export const getCurrentUserTeamRole = async (teamId) => {
+    const response = await axios.get(`/api/teams/${teamId}/role`);
+    return response.data;
+};

@@ -13,6 +13,7 @@ import Register from './pages/Auth/Register'
 import Dashboard from './pages/Dashboard/Dashboard'
 import TaskBoard from './pages/TaskBoard/TaskBoard'
 import TeamManagement from './pages/TeamManagement/TeamManagement'
+import TeamDetailPage from './pages/TeamManagement/TeamDetailPage'
 import Profile from './pages/Profile/Profile'
 import NotFound from './pages/NotFound'
 import TeamMemberManagement from './pages/TeamManagement/TeamMemberManagement'
@@ -96,6 +97,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <TeamManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/teams/:teamId"
+                  element={
+                    <ProtectedRoute>
+                      <TeamDetailPage />
                     </ProtectedRoute>
                   }
                 />

@@ -1,3 +1,4 @@
+// src/components/teams/AddTeamMemberModal.jsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiUserPlus, FiX, FiMail, FiShield, FiUser } from 'react-icons/fi';
@@ -56,6 +57,7 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
+            // Modified to match the expected API format
             await addTeamMember(teamId, {
                 email: data.email,
                 role: data.role

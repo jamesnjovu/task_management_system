@@ -22,7 +22,6 @@ function App() {
   useEffect(() => {
     // Check if user is authenticated on app load
     checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Protected route component

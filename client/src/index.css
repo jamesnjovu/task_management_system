@@ -105,3 +105,34 @@
 .priority-low {
   @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800;
 }
+
+/* Add these updated styles to your index.css file */
+
+/* Task Board Column */
+.task-column {
+  @apply flex flex-col h-full bg-gray-50 rounded-md p-3;
+}
+
+.task-header {
+  @apply font-medium mb-3 flex justify-between items-center;
+}
+
+/* Make the task list fill the available space and allow for scroll */
+.task-list {
+  @apply space-y-2 flex-1 overflow-y-auto flex flex-col;
+  min-height: 200px; /* Ensure minimal column height */
+  padding-bottom: 12px; /* Add padding at the bottom for easier dropping */
+}
+
+/* Task Card */
+.task-card {
+  @apply bg-white p-3 rounded-md shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow;
+}
+
+.task-card-title {
+  @apply font-medium text-gray-900 mb-1 line-clamp-2;
+}
+
+.task-card-meta {
+  @apply flex justify-between items-center text-xs text-gray-500 mt-2;
+}

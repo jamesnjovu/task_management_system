@@ -1,5 +1,5 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { useDrop } from 'react-dnd';
 import { FiPlus } from 'react-icons/fi';
 import TaskCard from './TaskCard';
 
@@ -8,8 +8,20 @@ const TaskColumn = ({
     title,
     tasks,
     onAddTask,
-    onTaskClick
+    onTaskClick,
+    moveTask
 }) => {
+    // Setup drop target for this column
+    const [{ isOver }, drop] = useDrop({
+        accept: 'TASK',
+        drop: () => ({ 
+            columnId: columnId 
+        }),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+        }),
+    });
+
     return (
         <div className="task-column">
             <div className="task-header">
@@ -25,26 +37,21 @@ const TaskColumn = ({
                 </button>
             </div>
 
-            <Droppable droppableId={columnId}>
-                {(provided, snapshot) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className={`task-list ${snapshot.isDraggingOver ? 'bg-gray-100' : ''
-                            }`}
-                    >
-                        {tasks.map((task, index) => (
-                            <TaskCard
-                                key={task.id}
-                                task={task}
-                                index={index}
-                                onClick={() => onTaskClick(task)}
-                            />
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
+            {/* Drop area for tasks */}
+            <div 
+                ref={drop}
+                className={`task-list ${isOver ? 'bg-gray-100' : ''}`}
+            >
+                {tasks.map((task, index) => (
+                    <TaskCard
+                        key={task.id}
+                        task={task}
+                        index={index}
+                        onClick={() => onTaskClick(task)}
+                        moveTask={moveTask}
+                    />
+                ))}
+            </div>
         </div>
     );
 };

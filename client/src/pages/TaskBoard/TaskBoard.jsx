@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FiPlus } from 'react-icons/fi';
 import { getTasks, updateTaskStatus, reorderTasks } from '../../services/taskService';
 import { getTeamById } from '../../services/teamService';
@@ -61,72 +62,78 @@ const TaskBoard = () => {
         fetchData();
     }, [teamId, setAlert]);
 
-    // Handle drag and drop
-    const handleDragEnd = async (result) => {
-        const { source, destination, draggableId } = result;
-
-        // Dropped outside a droppable area
-        if (!destination) return;
-
-        // Dropped in the same place
-        if (
-            source.droppableId === destination.droppableId &&
-            source.index === destination.index
-        ) {
-            return;
-        }
-
-        // Get the task that was dragged
-        const taskId = draggableId;
-
-        // Make a copy of the current tasks state
+    // Handle task status change
+    const moveTask = async (taskId, newStatus, sourceIndex, targetIndex) => {
+        // Clone the current tasks state
         const newTasks = { ...tasks };
-
-        // Remove the task from the source column
-        const sourceColumn = newTasks[source.droppableId];
-        const [removedTask] = sourceColumn.splice(source.index, 1);
-
-        // Status changed
-        if (source.droppableId !== destination.droppableId) {
+        
+        // Find the task in all columns
+        let taskToMove = null;
+        let currentStatus = null;
+        
+        // Search for the task in all columns
+        for (const status in newTasks) {
+            const taskIndex = newTasks[status].findIndex(t => t.id === taskId);
+            if (taskIndex !== -1) {
+                taskToMove = { ...newTasks[status][taskIndex] };
+                currentStatus = status;
+                
+                // If we're just reordering within the same list
+                if (sourceIndex !== undefined && targetIndex !== undefined && currentStatus === newStatus) {
+                    // Remove from current position
+                    const column = [...newTasks[status]];
+                    column.splice(sourceIndex, 1);
+                    
+                    // Insert at new position
+                    column.splice(targetIndex, 0, taskToMove);
+                    
+                    // Update the state
+                    newTasks[status] = column;
+                    setTasks(newTasks);
+                    
+                    try {
+                        // Get all task IDs in their new order
+                        const taskIds = column.map(task => task.id);
+                        
+                        // Update task order in the backend
+                        await reorderTasks(teamId, status, taskIds);
+                    } catch (error) {
+                        console.error('Error reordering tasks:', error);
+                        setAlert('Failed to reorder tasks', 'error');
+                        // We're not reverting the UI here to avoid flickering
+                    }
+                    
+                    return;
+                }
+                
+                // Otherwise, remove the task from its current column
+                newTasks[status].splice(taskIndex, 1);
+                break;
+            }
+        }
+        
+        if (!taskToMove) return;
+        
+        // If status has changed
+        if (currentStatus !== newStatus) {
             try {
                 // Update task status in the backend
-                await updateTaskStatus(taskId, destination.droppableId);
-
-                // Add the task to the destination column
-                const destinationColumn = newTasks[destination.droppableId];
-                destinationColumn.splice(destination.index, 0, {
-                    ...removedTask,
-                    status: destination.droppableId,
-                });
-
+                await updateTaskStatus(taskId, newStatus);
+                
+                // Update the task object with the new status
+                taskToMove.status = newStatus;
+                
+                // Add the task to its new column
+                newTasks[newStatus].push(taskToMove);
+                
+                // Update state
                 setTasks(newTasks);
             } catch (error) {
                 console.error('Error updating task status:', error);
                 setAlert('Failed to update task status', 'error');
-
-                // Revert the changes
-                sourceColumn.splice(source.index, 0, removedTask);
-                setTasks({ ...newTasks });
-            }
-        } else {
-            // Just reordering within the same column
-            sourceColumn.splice(destination.index, 0, removedTask);
-
-            try {
-                // Get all task IDs in the column in their new order
-                const taskIds = sourceColumn.map((task) => task.id);
-
-                // Update task order in the backend
-                await reorderTasks(teamId, source.droppableId, taskIds);
-
-                setTasks(newTasks);
-            } catch (error) {
-                console.error('Error reordering tasks:', error);
-                setAlert('Failed to reorder tasks', 'error');
-
-                // Revert the changes
-                sourceColumn.splice(destination.index, 1);
-                sourceColumn.splice(source.index, 0, removedTask);
+                
+                // Revert the changes in case of error
+                newTasks[currentStatus].push(taskToMove);
                 setTasks({ ...newTasks });
             }
         }
@@ -154,13 +161,28 @@ const TaskBoard = () => {
 
     // Handle task update
     const handleTaskUpdate = (updatedTask) => {
+        // Find the task's current status by searching all columns
+        let oldStatus = null;
+        for (const status in tasks) {
+            const taskIndex = tasks[status].findIndex(t => t.id === updatedTask.id);
+            if (taskIndex !== -1) {
+                oldStatus = status;
+                break;
+            }
+        }
+
+        if (!oldStatus) {
+            console.error('Task not found in columns:', updatedTask.id);
+            return;
+        }
+
         // If the status changed, move the task to the appropriate column
-        if (updatedTask.status !== selectedTask.status) {
+        if (updatedTask.status !== oldStatus) {
             setTasks((prev) => {
                 const newTasks = { ...prev };
 
                 // Remove the task from its current column
-                newTasks[selectedTask.status] = newTasks[selectedTask.status].filter(
+                newTasks[oldStatus] = newTasks[oldStatus].filter(
                     (task) => task.id !== updatedTask.id
                 );
 
@@ -222,8 +244,8 @@ const TaskBoard = () => {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <DragDropContext onDragEnd={handleDragEnd}>
+            <DndProvider backend={HTML5Backend}>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {/* To Do Column */}
                     <div className="h-full">
                         <TaskColumn
@@ -232,6 +254,7 @@ const TaskBoard = () => {
                             tasks={tasks.todo}
                             onAddTask={() => handleCreateTask('todo')}
                             onTaskClick={handleTaskClick}
+                            moveTask={moveTask}
                         />
                     </div>
 
@@ -243,6 +266,7 @@ const TaskBoard = () => {
                             tasks={tasks.in_progress}
                             onAddTask={() => handleCreateTask('in_progress')}
                             onTaskClick={handleTaskClick}
+                            moveTask={moveTask}
                         />
                     </div>
 
@@ -254,10 +278,11 @@ const TaskBoard = () => {
                             tasks={tasks.done}
                             onAddTask={() => handleCreateTask('done')}
                             onTaskClick={handleTaskClick}
+                            moveTask={moveTask}
                         />
                     </div>
-                </DragDropContext>
-            </div>
+                </div>
+            </DndProvider>
 
             {/* Create Task Modal */}
             {showCreateModal && (

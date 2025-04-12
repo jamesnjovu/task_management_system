@@ -69,10 +69,7 @@ export const getTeamMembers = async (teamId) => {
  * @returns {Promise} - Promise with the API response
  */
 export const addTeamMember = async (teamId, memberData) => {
-    // If the API expects userId, but we have email, we need to handle this
-    // For this implementation, we'll assume the backend can handle email directly
-    // or we need to make a separate API call to find the user by email first
-    const response = await axios.post(`${API_URL}/${teamId}/members`, memberData);
+    const response = await axios.post(`/api/teams/${teamId}/members`, memberData);
     return response.data;
 };
 

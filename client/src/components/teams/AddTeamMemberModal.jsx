@@ -1,4 +1,3 @@
-// src/components/teams/AddTeamMemberModal.jsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiUserPlus, FiX, FiMail, FiShield, FiUser } from 'react-icons/fi';
@@ -23,7 +22,7 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
 
     const searchForUser = async () => {
         if (!email || email.length < 3) return;
-        
+
         setSearching(true);
         try {
             const response = await searchUsers(email);
@@ -38,13 +37,13 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
     const handleEmailChange = (e) => {
         const value = e.target.value;
         setValue('email', value);
-        
+
         // Debounce search
         if (value.length >= 3) {
             const debounce = setTimeout(() => {
                 searchForUser();
             }, 500);
-            
+
             return () => clearTimeout(debounce);
         }
     };
@@ -57,18 +56,24 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            // Modified to match the expected API format
+            // Send the email and role to the API
             await addTeamMember(teamId, {
                 email: data.email,
                 role: data.role
             });
-            
+
+            setAlert('Team member added successfully', 'success');
             onMemberAdded();
         } catch (error) {
             console.error('Error adding team member:', error);
-            const errorMessage =
-                error.response?.data?.message ||
-                'Failed to add team member. Please check if the email is valid.';
+
+            // Extract error message from the response or use a default
+            let errorMessage = 'Failed to add team member. Please check if the email is valid.';
+            if (error.response?.data?.message) {
+                errorMessage = error.response.data.message;
+            } else if (error.response?.data?.status === 'fail' && error.response?.data?.data) {
+                errorMessage = error.response.data.data;
+            }
 
             setAlert(errorMessage, 'error');
             setLoading(false);
@@ -124,21 +129,21 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
                                             disabled={loading}
                                             required
                                         />
-                                        
+
                                         {/* Search results dropdown */}
                                         {searchResults.length > 0 && (
                                             <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-48 overflow-y-auto">
                                                 <ul className="py-1">
                                                     {searchResults.map((user) => (
-                                                        <li 
+                                                        <li
                                                             key={user.id}
                                                             className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
                                                             onClick={() => selectUser(user)}
                                                         >
                                                             {user.avatar_url ? (
-                                                                <img 
-                                                                    src={user.avatar_url} 
-                                                                    alt={user.username} 
+                                                                <img
+                                                                    src={user.avatar_url}
+                                                                    alt={user.username}
                                                                     className="h-6 w-6 rounded-full mr-2"
                                                                 />
                                                             ) : (
@@ -155,7 +160,7 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
                                                 </ul>
                                             </div>
                                         )}
-                                        
+
                                         {searching && (
                                             <div className="absolute right-3 top-10 text-gray-400">
                                                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -170,13 +175,12 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Role <span className="text-danger-500">*</span>
                                         </label>
-                                        
+
                                         <div className="space-y-3">
-                                            <label className={`flex items-center p-3 border rounded-md ${
-                                                watch('role') === 'member' 
-                                                    ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200' 
+                                            <label className={`flex items-center p-3 border rounded-md ${watch('role') === 'member'
+                                                    ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
                                                     : 'border-gray-300 hover:bg-gray-50'
-                                            } cursor-pointer`}>
+                                                } cursor-pointer`}>
                                                 <input
                                                     type="radio"
                                                     {...register('role')}
@@ -194,12 +198,11 @@ const AddTeamMemberModal = ({ teamId, onClose, onMemberAdded }) => {
                                                     </div>
                                                 </div>
                                             </label>
-                                            
-                                            <label className={`flex items-center p-3 border rounded-md ${
-                                                watch('role') === 'admin' 
-                                                    ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200' 
+
+                                            <label className={`flex items-center p-3 border rounded-md ${watch('role') === 'admin'
+                                                    ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-200'
                                                     : 'border-gray-300 hover:bg-gray-50'
-                                            } cursor-pointer`}>
+                                                } cursor-pointer`}>
                                                 <input
                                                     type="radio"
                                                     {...register('role')}

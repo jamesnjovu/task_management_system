@@ -77,16 +77,20 @@ const validators = {
                 .isLength({ max: 500 }).withMessage('Description cannot exceed 500 characters')
         ],
         addMember: [
-            body('userId')
+            body('email')
+                .optional()
                 .trim()
-                .notEmpty().withMessage('User ID is required'),
+                .isEmail().withMessage('Please provide a valid email address'),
+            body('userId')
+                .optional()
+                .trim(),
             body('role')
                 .trim()
                 .notEmpty().withMessage('Role is required')
                 .isIn(['admin', 'member']).withMessage('Role must be either admin or member')
         ]
     },
-
+    
     // Task validation schemas
     task: {
         create: [

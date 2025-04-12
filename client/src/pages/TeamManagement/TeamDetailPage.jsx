@@ -30,8 +30,6 @@ const TeamDetailPage = () => {
                 getCurrentUserTeamRole(teamId)
             ]);
             setTeam(response.data);
-
-
             setIsAdmin(roleResponse.data.role === 'admin');
         } catch (error) {
             console.error('Error fetching team details:', error);
@@ -134,11 +132,11 @@ const TeamDetailPage = () => {
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500">Your Role</p>
-                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${team.role === 'admin'
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${isAdmin
                                         ? 'bg-primary-100 text-primary-800'
                                         : 'bg-gray-100 text-gray-800'
                                     }`}>
-                                    {team.role}
+                                    {isAdmin ? 'Admin' : 'Member'}
                                 </span>
                             </div>
                         </div>

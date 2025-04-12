@@ -174,7 +174,8 @@ exports.getTeamMembers = async (req, res, next) => {
  */
 exports.addTeamMember = async (req, res, next) => {
     try {
-        const { userId, role } = req.body;
+        const { email, userId, role } = req.body;
+        let userToAdd;
 
         // Check if team exists
         const team = await Team.findById(req.params.id);
@@ -188,20 +189,29 @@ exports.addTeamMember = async (req, res, next) => {
             return next(new AppError('Only team admins can add members', 403));
         }
 
-        // Check if user exists
-        const user = await User.findById(userId);
-        if (!user) {
-            return next(new AppError('User not found', 404));
+        // Find user by email if email is provided, otherwise use userId
+        if (email) {
+            userToAdd = await User.findByEmail(email);
+            if (!userToAdd) {
+                return next(new AppError('User with this email not found', 404));
+            }
+        } else if (userId) {
+            userToAdd = await User.findById(userId);
+            if (!userToAdd) {
+                return next(new AppError('User not found', 404));
+            }
+        } else {
+            return next(new AppError('Email or userId is required', 400));
         }
 
         // Check if user is already a member
-        const existingMember = await Team.isMember(team.id, userId);
+        const existingMember = await Team.isMember(team.id, userToAdd.id);
         if (existingMember) {
             return next(new AppError('User is already a member of this team', 400));
         }
 
         // Add member to team
-        const newMember = await Team.addMember(team.id, userId, role);
+        const newMember = await Team.addMember(team.id, userToAdd.id, role || 'member');
 
         res.status(201).json({
             success: true,

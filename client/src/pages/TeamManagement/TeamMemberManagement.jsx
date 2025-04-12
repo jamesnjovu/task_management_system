@@ -42,7 +42,6 @@ const TeamMemberManagement = () => {
             getTeamMembers(teamId),
             getCurrentUserTeamRole(teamId)
         ]);
-
         setTeam(teamResponse.data);
         setMembers(membersResponse.data);
         setIsAdmin(roleResponse.data.role === 'admin');

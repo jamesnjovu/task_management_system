@@ -86,3 +86,35 @@ exports.getUserById = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * @desc    Search users by email or username
+ * @route   GET /api/users/search
+ * @access  Private
+ */
+exports.searchUsers = async (req, res, next) => {
+    try {
+        const { q } = req.query;
+
+        if (!q || q.length < 3) {
+            return res.status(200).json({
+                success: true,
+                data: []
+            });
+        }
+
+        // Search users by email or username
+        const users = await db('users')
+            .where('email', 'ilike', `%${q}%`)
+            .orWhere('username', 'ilike', `%${q}%`)
+            .select('id', 'username', 'email', 'first_name', 'last_name', 'avatar_url')
+            .limit(10);
+
+        res.status(200).json({
+            success: true,
+            data: users
+        });
+    } catch (error) {
+        next(error);
+    }
+};

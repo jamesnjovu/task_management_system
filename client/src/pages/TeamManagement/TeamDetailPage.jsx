@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiEdit2, FiTrash2, FiUsers } from 'react-icons/fi';
 import { getTeamById, deleteTeam, getCurrentUserTeamRole } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
+import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import TeamMembersView from '../../components/teams/TeamMembersView';
 import EditTeamModal from '../../components/teams/EditTeamModal';
@@ -12,6 +13,7 @@ import ConfirmModal from '../../components/common/ConfirmModal';
 const TeamDetailPage = () => {
     const { teamId } = useParams();
     const navigate = useNavigate();
+    const { refreshTeams } = useAuth();
     const { setAlert } = useAlert();
     const [team, setTeam] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -52,6 +54,7 @@ const TeamDetailPage = () => {
         setIsDeleting(true);
         try {
             await deleteTeam(teamId);
+            refreshTeams();
             setAlert('Team deleted successfully', 'success');
             navigate('/teams');
         } catch (error) {
@@ -62,6 +65,7 @@ const TeamDetailPage = () => {
     };
     const handleTeamUpdated = (updatedTeam) => {
         setTeam(updatedTeam);
+        refreshTeams();
         setShowEditModal(false);
     };
 

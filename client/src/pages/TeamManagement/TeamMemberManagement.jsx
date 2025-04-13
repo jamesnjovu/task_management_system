@@ -4,9 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FiPlus, FiSettings, FiUserX, FiShield, FiUser, FiMail, FiSearch, FiArrowLeft } from 'react-icons/fi';
 import { getTeamById, getTeamMembers, getCurrentUserTeamRole, removeTeamMember } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
-import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
-import FormInput from '../../components/common/FormInput';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import AddTeamMemberModal from '../../components/teams/AddTeamMemberModal';
 import MemberRoleModal from '../../components/teams/MemberRoleModal';
@@ -16,7 +14,6 @@ const TeamMemberManagement = () => {
     const { teamId } = useParams();
     const navigate = useNavigate();
     const { setAlert } = useAlert();
-    const { currentUser } = useAuth();
 
     const [team, setTeam] = useState(null);
     const [members, setMembers] = useState([]);

@@ -3,12 +3,14 @@ import { useForm } from 'react-hook-form';
 import { FiX } from 'react-icons/fi';
 import { createTeam } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
+import { useAuth } from '../../context/AuthContext';
 import FormInput from '../common/FormInput';
 import Button from '../common/Button';
 
 const CreateTeamModal = ({ onClose, onCreateTeam }) => {
     const [loading, setLoading] = useState(false);
     const { setAlert } = useAlert();
+    const { refreshTeams } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = async (data) => {
@@ -16,6 +18,7 @@ const CreateTeamModal = ({ onClose, onCreateTeam }) => {
         try {
             const response = await createTeam(data);
             onCreateTeam(response.data);
+            refreshTeams()
         } catch (error) {
             console.error('Error creating team:', error);
             const errorMessage =

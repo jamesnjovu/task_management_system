@@ -9,7 +9,7 @@ import CreateTeamModal from '../teams/CreateTeamModal';
 const Sidebar = () => {
     const location = useLocation();
     const { setAlert } = useAlert();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, teamsRefreshTrigger } = useAuth();
     const [teams, setTeams] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -20,7 +20,7 @@ const Sidebar = () => {
         if (isAuthenticated) {
             fetchTeams();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, teamsRefreshTrigger]);
 
     const fetchTeams = async () => {
         try {
@@ -31,7 +31,7 @@ const Sidebar = () => {
         } catch (error) {
             console.error('Error fetching teams:', error);
             setError(true);
-            
+
             // Only show alert for non-auth related errors
             if (error.response && error.response.status !== 401) {
                 setAlert('Failed to load teams', 'error');
@@ -62,17 +62,15 @@ const Sidebar = () => {
         <>
             {/* Mobile overlay */}
             <div
-                className={`md:hidden fixed inset-0 z-20 transition-opacity bg-gray-600 bg-opacity-75 ${
-                    isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                }`}
+                className={`md:hidden fixed inset-0 z-20 transition-opacity bg-gray-600 bg-opacity-75 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    }`}
                 onClick={() => setIsOpen(false)}
             ></div>
 
             {/* Sidebar */}
             <div
-                className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform md:translate-x-0 md:relative md:shadow-none ${
-                    isOpen ? 'translate-x-0' : '-translate-x-full'
-                } md:block md:h-full h-screen overflow-hidden`}
+                className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform md:translate-x-0 md:relative md:shadow-none ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                    } md:block md:h-full h-screen overflow-hidden`}
             >
                 <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 md:hidden">
                     <h2 className="text-lg font-medium text-gray-900">Menu</h2>
@@ -109,7 +107,7 @@ const Sidebar = () => {
                                 ) : error ? (
                                     <div className="px-4 py-2 text-sm text-gray-600">
                                         <div className="text-danger-600 mb-2">Failed to load teams</div>
-                                        <button 
+                                        <button
                                             onClick={fetchTeams}
                                             className="text-primary-600 hover:text-primary-700 underline text-xs"
                                         >

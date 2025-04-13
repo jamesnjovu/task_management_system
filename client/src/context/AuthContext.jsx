@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [teamsRefreshTrigger, setTeamsRefreshTrigger] = useState(0);
     const { setAlert } = useAlert();
 
     // Configure axios defaults on initial load
@@ -91,6 +92,11 @@ export const AuthProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    // Trigger a refresh of the teams list in components that need it
+    const refreshTeams = () => {
+        setTeamsRefreshTrigger(prev => prev + 1);
     };
 
     // Register new user
@@ -190,7 +196,9 @@ export const AuthProvider = ({ children }) => {
         logout,
         checkAuth,
         updateProfile,
-        changePassword
+        changePassword,
+        refreshTeams,
+        teamsRefreshTrigger
     };
 
     return (

@@ -3,12 +3,14 @@ import { useForm } from 'react-hook-form';
 import { FiX } from 'react-icons/fi';
 import { updateTeam } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
+import { useAuth } from '../../context/AuthContext';
 import FormInput from '../common/FormInput';
 import Button from '../common/Button';
 
 const EditTeamModal = ({ team, onClose, onTeamUpdated }) => {
     const [loading, setLoading] = useState(false);
     const { setAlert } = useAlert();
+    const { refreshTeams } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             name: team.name,
@@ -22,6 +24,7 @@ const EditTeamModal = ({ team, onClose, onTeamUpdated }) => {
             const response = await updateTeam(team.id, data);
             onTeamUpdated(response.data);
             setAlert('Team updated successfully!', 'success');
+            refreshTeams()
         } catch (error) {
             console.error('Error updating team:', error);
             const errorMessage =

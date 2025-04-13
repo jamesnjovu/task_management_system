@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiPlus, FiEdit2, FiTrash2, FiUsers, FiList } from 'react-icons/fi';
 import { getMyTeams, deleteTeam } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
+import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import CreateTeamModal from '../../components/teams/CreateTeamModal';
 import EditTeamModal from '../../components/teams/EditTeamModal';
@@ -17,7 +18,8 @@ const TeamManagement = () => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [selectedTeam, setSelectedTeam] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
-    const { setAlert } = useAlert();
+    const { setAlert } = useAlert();  
+    const { refreshTeams } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -73,6 +75,7 @@ const TeamManagement = () => {
             setAlert('Team deleted successfully!', 'success');
             setShowDeleteConfirm(false);
             setSelectedTeam(null);
+            refreshTeams()
         } catch (error) {
             console.error('Error deleting team:', error);
             const errorMessage =

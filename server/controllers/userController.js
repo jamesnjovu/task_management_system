@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const Task = require('../models/Task');
 const { AppError } = require('../middleware/errorHandler');
+const { db } = require('../config/db');
+
 
 /**
  * @desc    Update user profile

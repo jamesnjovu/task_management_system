@@ -11,8 +11,7 @@ router.use(protect);
 
 router.put('/profile', validate(validators.user.update), updateProfile);
 router.get('/tasks', getMyTasks);
-router.get('/:id', getUserById);
 router.get('/search', searchUsers);
-
+router.get('/:id', getUserById);
 
 module.exports = router;

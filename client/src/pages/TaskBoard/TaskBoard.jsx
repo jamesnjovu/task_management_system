@@ -53,7 +53,17 @@ const TaskBoard = () => {
                 setTasks(tasksByStatus);
             } catch (error) {
                 console.error('Error fetching board data:', error);
-                setAlert('Failed to load board data', 'error');
+
+                if (error.teamRes && error.teamRes.status === 404) {
+                    setAlert('Team not found. It may have been deleted.', 'error');
+                } else {
+                    setAlert('Failed to load team details', 'error');
+                }
+                if (error.tasksRes && error.tasksRes.status === 404) {
+                    setAlert('Board data not found. It may have been deleted.', 'error');
+                } else {
+                    setAlert('Failed to load board data', 'error');
+                }
             } finally {
                 setLoading(false);
             }
@@ -66,12 +76,12 @@ const TaskBoard = () => {
     const moveTask = async (taskId, newStatus, sourceIndex, targetIndex) => {
         // Clone the current tasks state
         const newTasks = { ...tasks };
-        
+
         // Find the task in all columns
         let taskToMove = null;
         let currentStatus = null;
         let oldIndex = -1;
-        
+
         // Search for the task in all columns
         for (const status in newTasks) {
             const taskIndex = newTasks[status].findIndex(t => t.id === taskId);
@@ -79,18 +89,18 @@ const TaskBoard = () => {
                 taskToMove = { ...newTasks[status][taskIndex] };
                 currentStatus = status;
                 oldIndex = taskIndex;
-                
+
                 // If we're just reordering within the same list
                 if (sourceIndex !== undefined && targetIndex !== undefined && currentStatus === newStatus) {
                     // Remove from current position and insert at new position without triggering loading state
                     const column = [...newTasks[status]];
                     column.splice(oldIndex, 1);
                     column.splice(targetIndex, 0, taskToMove);
-                    
+
                     // Update the state immediately without setting loading=true
                     newTasks[status] = column;
-                    setTasks({...newTasks});
-                    
+                    setTasks({ ...newTasks });
+
                     // Update backend in the background without blocking UI
                     (async () => {
                         try {
@@ -101,36 +111,36 @@ const TaskBoard = () => {
                             setAlert('Failed to reorder tasks', 'error');
                         }
                     })();
-                    
+
                     return;
                 }
-                
+
                 // Otherwise, remove the task from its current column
                 newTasks[status].splice(taskIndex, 1);
                 break;
             }
         }
-        
+
         if (!taskToMove) {
             console.error('Task not found:', taskId);
             return;
         }
-        
+
         // If status has changed
         if (currentStatus !== newStatus) {
             // Update UI immediately without waiting for API response
             taskToMove.status = newStatus;
-            
+
             // Add the task to its new column at the specific index if provided, otherwise add to the end
             if (targetIndex !== undefined) {
                 newTasks[newStatus].splice(targetIndex, 0, taskToMove);
             } else {
                 newTasks[newStatus].push(taskToMove);
             }
-            
+
             // Update state immediately
-            setTasks({...newTasks});
-            
+            setTasks({ ...newTasks });
+
             // Then update backend in the background
             (async () => {
                 try {
@@ -138,7 +148,7 @@ const TaskBoard = () => {
                 } catch (error) {
                     console.error('Error updating task status:', error);
                     setAlert('Failed to update task status', 'error');
-                    
+
                     // Revert the UI on error
                     setTasks(prevTasks => {
                         const revertTasks = { ...prevTasks };

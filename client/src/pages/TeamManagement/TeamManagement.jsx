@@ -1,4 +1,3 @@
-// src/pages/TeamManagement/TeamManagement.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiPlus, FiEdit2, FiTrash2, FiUsers, FiList } from 'react-icons/fi';
@@ -6,12 +5,18 @@ import { getMyTeams, deleteTeam } from '../../services/teamService';
 import { useAlert } from '../../context/AlertContext';
 import Button from '../../components/common/Button';
 import CreateTeamModal from '../../components/teams/CreateTeamModal';
+import EditTeamModal from '../../components/teams/EditTeamModal';
+import ConfirmModal from '../../components/common/ConfirmModal';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const TeamManagement = () => {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [selectedTeam, setSelectedTeam] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
     const { setAlert } = useAlert();
     const navigate = useNavigate();
 
@@ -38,22 +43,45 @@ const TeamManagement = () => {
         setAlert('Team created successfully!', 'success');
     };
 
-    const handleDeleteTeam = async (teamId, teamName, e) => {
-        e.stopPropagation(); // Prevent navigation when clicking delete button
-        
-        if (window.confirm(`Are you sure you want to delete the team "${teamName}"? This action cannot be undone.`)) {
-            try {
-                await deleteTeam(teamId);
-                setTeams(teams.filter(team => team.id !== teamId));
-                setAlert('Team deleted successfully!', 'success');
-            } catch (error) {
-                console.error('Error deleting team:', error);
-                const errorMessage =
-                    error.response?.data?.message ||
-                    'Failed to delete team. Please try again.';
+    const handleEditTeam = (team) => {
+        setSelectedTeam(team);
+        setShowEditModal(true);
+    };
 
-                setAlert(errorMessage, 'error');
-            }
+    const handleTeamUpdated = (updatedTeam) => {
+        setTeams(teams.map(team =>
+            team.id === updatedTeam.id ? { ...team, ...updatedTeam } : team
+        ));
+        setShowEditModal(false);
+        setSelectedTeam(null);
+        setAlert('Team updated successfully!', 'success');
+    };
+
+    const handleOpenDeleteConfirm = (team, e) => {
+        e.stopPropagation(); // Prevent navigation when clicking delete button
+        setSelectedTeam(team);
+        setShowDeleteConfirm(true);
+    };
+
+    const handleDeleteTeam = async () => {
+        if (!selectedTeam) return;
+
+        setIsDeleting(true);
+        try {
+            await deleteTeam(selectedTeam.id);
+            setTeams(teams.filter(team => team.id !== selectedTeam.id));
+            setAlert('Team deleted successfully!', 'success');
+            setShowDeleteConfirm(false);
+            setSelectedTeam(null);
+        } catch (error) {
+            console.error('Error deleting team:', error);
+            const errorMessage =
+                error.response?.data?.message ||
+                'Failed to delete team. Please try again.';
+
+            setAlert(errorMessage, 'error');
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -128,20 +156,64 @@ const TeamManagement = () => {
                                         <FiUsers className="mr-1" />
                                         Members
                                     </Link>
-                                    
+
                                     {team.role === 'admin' && (
-                                        <button
-                                            onClick={(e) => handleDeleteTeam(team.id, team.name, e)}
-                                            className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-danger-700 bg-white hover:bg-danger-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500"
-                                        >
-                                            <FiTrash2 className="mr-1" />
-                                            Delete
-                                        </button>
+                                        <>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditTeam(team);
+                                                }}
+                                                className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                            >
+                                                <FiEdit2 className="mr-1" />
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={(e) => handleOpenDeleteConfirm(team, e)}
+                                                className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-danger-700 bg-white hover:bg-danger-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500"
+                                            >
+                                                <FiTrash2 className="mr-1" />
+                                                Delete
+                                            </button>
+                                        </>
                                     )}
                                 </div>
                             </div>
                         </div>
                     ))}
+                    {showCreateModal && (
+                        <CreateTeamModal
+                            onClose={() => setShowCreateModal(false)}
+                            onCreateTeam={handleCreateTeam}
+                        />
+                    )}
+
+                    {showEditModal && selectedTeam && (
+                        <EditTeamModal
+                            team={selectedTeam}
+                            onClose={() => {
+                                setShowEditModal(false);
+                                setSelectedTeam(null);
+                            }}
+                            onTeamUpdated={handleTeamUpdated}
+                        />
+                    )}
+
+                    {showDeleteConfirm && selectedTeam && (
+                        <ConfirmModal
+                            title="Delete Team"
+                            message={`Are you sure you want to delete the team "${selectedTeam.name}"? This action cannot be undone.`}
+                            confirmText="Delete"
+                            confirmVariant="danger"
+                            onConfirm={handleDeleteTeam}
+                            onCancel={() => {
+                                setShowDeleteConfirm(false);
+                                setSelectedTeam(null);
+                            }}
+                            isLoading={isDeleting}
+                        />
+                    )}
                 </div>
             )}
 

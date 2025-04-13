@@ -24,10 +24,10 @@ const TeamMemberManagement = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const [showAddModal, setShowAddModal] = useState(false);
     const [showRoleModal, setShowRoleModal] = useState(false);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const [showAddModal, setShowAddModal] = useState(false);
     const [removingMember, setRemovingMember] = useState(false);
 
     useEffect(() => {
@@ -37,14 +37,14 @@ const TeamMemberManagement = () => {
     const fetchTeamData = async () => {
         try {
             setLoading(true);
-        const [teamResponse, membersResponse, roleResponse] = await Promise.all([
-            getTeamById(teamId),
-            getTeamMembers(teamId),
-            getCurrentUserTeamRole(teamId)
-        ]);
-        setTeam(teamResponse.data);
-        setMembers(membersResponse.data);
-        setIsAdmin(roleResponse.data.role === 'admin');
+            const [teamResponse, membersResponse, roleResponse] = await Promise.all([
+                getTeamById(teamId),
+                getTeamMembers(teamId),
+                getCurrentUserTeamRole(teamId)
+            ]);
+            setTeam(teamResponse.data);
+            setMembers(membersResponse.data);
+            setIsAdmin(roleResponse.data.role === 'admin');
         } catch (error) {
             console.error('Error fetching team data:', error);
             setAlert('Failed to load team data', 'error');
@@ -65,6 +65,7 @@ const TeamMemberManagement = () => {
     };
 
     const handleRoleChange = (member) => {
+        console.log('Changing role for member:', member);
         setSelectedMember(member);
         setShowRoleModal(true);
     };
@@ -82,7 +83,7 @@ const TeamMemberManagement = () => {
 
     const confirmRemoveMember = async () => {
         if (!selectedMember) return;
-        
+
         setRemovingMember(true);
         try {
             await removeTeamMember(teamId, selectedMember.id);
@@ -130,7 +131,7 @@ const TeamMemberManagement = () => {
                     Back to Team
                 </Link>
             </div>
-            
+
             <div className="mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">{team?.name} - Team Members</h1>
                 <p className="text-gray-600 mt-1">{team?.description}</p>
@@ -232,8 +233,8 @@ const TeamMemberManagement = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${member.role === 'admin'
-                                                    ? 'bg-primary-100 text-primary-800'
-                                                    : 'bg-gray-100 text-gray-800'
+                                                ? 'bg-primary-100 text-primary-800'
+                                                : 'bg-gray-100 text-gray-800'
                                                 }`}>
                                                 {member.role === 'admin' ? (
                                                     <>

@@ -1,4 +1,5 @@
 const express = require('express');
+const { body } = require('express-validator');
 const {
     createTeam,
     getMyTeams,
@@ -34,7 +35,10 @@ router.get('/:id/role', getCurrentUserRole);
 router.get('/:id/members', getTeamMembers);
 router.post('/:id/members', validate(validators.team.addMember), addTeamMember);
 router.put('/:id/members/:userId', validate([
-    { body: () => { return { role: ['admin', 'member'] } } }
+    body('role')
+        .trim()
+        .notEmpty().withMessage('Role is required')
+        .isIn(['admin', 'member']).withMessage('Role must be either admin or member')
 ]), updateMemberRole);
 router.delete('/:id/members/:userId', removeTeamMember);
 

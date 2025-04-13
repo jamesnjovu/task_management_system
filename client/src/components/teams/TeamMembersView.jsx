@@ -54,7 +54,7 @@ const TeamMembersView = ({ teamId, isAdmin = false }) => {
 
     const confirmRemoveMember = async () => {
         if (!selectedMember) return;
-        
+
         setRemovingMember(true);
         try {
             await removeTeamMember(teamId, selectedMember.id);
@@ -188,77 +188,8 @@ const TeamMembersView = ({ teamId, isAdmin = false }) => {
                         )}
                     </ul>
                 )}
-                    <ul className="divide-y divide-gray-200">
-                        {/* Show only first 5 members */}
-                        {members.slice(0, 5).map((member) => (
-                            <li key={member.id} className="py-4">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        {member.avatar_url ? (
-                                            <img
-                                                className="h-10 w-10 rounded-full mr-3"
-                                                src={member.avatar_url}
-                                                alt={member.username}
-                                            />
-                                        ) : (
-                                            <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center text-white mr-3">
-                                                {member.username?.charAt(0).toUpperCase()}
-                                            </div>
-                                        )}
-                                        <div>
-                                            <h4 className="text-sm font-medium text-gray-900">{member.username}</h4>
-                                            <p className="text-sm text-gray-500">{member.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                                member.role === 'admin'
-                                                    ? 'bg-primary-100 text-primary-800'
-                                                    : 'bg-gray-100 text-gray-800'
-                                            }`}>
-                                            {member.role === 'admin' ? <FiShield className="mr-1" /> : <FiUser className="mr-1" />}
-                                            {member.role}
-                                        </span>
-
-                                        {isAdmin && (
-                                            <div className="ml-4 flex">
-                                                {/* Role toggle button (only visible to admins and for non-self) */}
-                                                <button
-                                                    onClick={() => handleRoleChange(member)}
-                                                    className="text-primary-600 hover:text-primary-900 mr-3"
-                                                >
-                                                    Change Role
-                                                </button>
-                                                
-                                                {/* Remove member button */}
-                                                <button
-                                                    onClick={() => handleRemoveMember(member)}
-                                                    className="text-danger-600 hover:text-danger-900"
-                                                >
-                                                    <FiUserX className="h-5 w-5" />
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-
-                        {/* Show a link to view all if there are more than 5 members */}
-                        {members.length > 5 && (
-                            <li className="py-4 text-center">
-                                <Link 
-                                    to={`/teams/${teamId}/members`}
-                                    className="text-primary-600 hover:text-primary-800 font-medium"
-                                >
-                                    View all {members.length} members <FiArrowRight className="inline ml-1" />
-                                </Link>
-                            </li>
-                        )}
-                    </ul>
-                )}
             </div>
-            
+
             {/* Modals */}
             {showAddModal && (
                 <AddTeamMemberModal
@@ -267,7 +198,7 @@ const TeamMembersView = ({ teamId, isAdmin = false }) => {
                     onMemberAdded={handleAddMember}
                 />
             )}
-            
+
             {showRoleModal && selectedMember && (
                 <MemberRoleModal
                     teamId={teamId}
@@ -276,7 +207,7 @@ const TeamMembersView = ({ teamId, isAdmin = false }) => {
                     onRoleUpdated={handleRoleUpdated}
                 />
             )}
-            
+
             {showRemoveModal && selectedMember && (
                 <ConfirmModal
                     title="Remove Team Member"

@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "author": "James Njovu",
+  "homepage": "https://jamesnjovu.github.io/task_management_system",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

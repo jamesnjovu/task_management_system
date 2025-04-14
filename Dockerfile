@@ -23,7 +23,7 @@ RUN mkdir -p logs
 EXPOSE 5000
 
 # Set environment variable to production
-ENV NODE_ENV=development
+ENV NODE_ENV=production
 
 # Add a script to replace environment variables at startup
 COPY docker-entrypoint.sh ./

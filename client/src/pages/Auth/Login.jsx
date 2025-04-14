@@ -22,13 +22,12 @@ const Login = () => {
         try {
             const success = await login(data);
             if (success) {
-                // Successfully logged in, we'll be redirected by the useEffect
+                navigate('/dashboard');
             }
         } finally {
             setLoading(false);
         }
     };
-
 
     return (
         <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">

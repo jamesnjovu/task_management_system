@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'http://taskmanagementsystem.sms.probasegroup.com',
         changeOrigin: true,
         secure: false,
         ws: true,
@@ -17,6 +17,6 @@ export default defineConfig({
   },
   define: {
     // Define environment variables that will be available in the client code
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:5000'),
+    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://taskmanagementsystem.sms.probasegroup.com'),
   }
 })

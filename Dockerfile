@@ -25,5 +25,10 @@ EXPOSE 5000
 # Set environment variable to production
 ENV NODE_ENV=production
 
-# Command to run the server
-CMD ["npm", "start"]
+# Add a script to replace environment variables at startup
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
+# Command to run the server with environment variable handling
+ENTRYPOINT ["./docker-entrypoint.sh"]
+

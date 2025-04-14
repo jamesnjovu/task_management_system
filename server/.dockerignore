@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+package-lock.json
+.env
+.env.example
+.DS_Store
+project_plan

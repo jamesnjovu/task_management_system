@@ -81,18 +81,6 @@ const Login = () => {
                             disabled={loading}
                             required
                         />
-
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember_me"
-                                    name="remember_me"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                                />
-                            </div>
-                        </div>
-
                         <div>
                             <Button
                                 type="submit"

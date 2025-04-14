@@ -43,6 +43,8 @@ const Register = () => {
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label="Username"
+                            placeholder="Enter Username"
+                            type="text"
                             {...register('username', {
                                 required: 'Username is required',
                                 minLength: {
@@ -61,6 +63,7 @@ const Register = () => {
 
                         <FormInput
                             label="Email Address"
+                            placeholder="Enter Email Address"
                             type="email"
                             {...register('email', {
                                 required: 'Email is required',
@@ -77,12 +80,14 @@ const Register = () => {
                         <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                             <FormInput
                                 label="First Name"
+                                placeholder="Enter First Name"
                                 {...register('firstName')}
                                 disabled={loading}
                             />
 
                             <FormInput
                                 label="Last Name"
+                                placeholder="Enter Last Name"
                                 {...register('lastName')}
                                 disabled={loading}
                             />
@@ -90,6 +95,7 @@ const Register = () => {
 
                         <FormInput
                             label="Password"
+                            placeholder="Enter Password"
                             type="password"
                             {...register('password', {
                                 required: 'Password is required',
@@ -105,6 +111,7 @@ const Register = () => {
 
                         <FormInput
                             label="Confirm Password"
+                            placeholder="Enter Confirm Password"
                             type="password"
                             {...register('confirmPassword', {
                                 required: 'Please confirm your password',

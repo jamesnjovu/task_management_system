@@ -117,8 +117,9 @@ exports.getTaskById = async (req, res, next) => {
  * @access  Private
  */
 exports.updateTask = async (req, res, next) => {
+    console.log(req.body, 'update task')
     try {
-        const { title, description, status, priority, assignedTo, dueDate } = req.body;
+        const { title, description, status, priority, assigned_to, due_date } = req.body;
 
         // Check if task exists
         let task = await Task.findById(req.params.id);
@@ -138,9 +139,9 @@ exports.updateTask = async (req, res, next) => {
             description,
             status,
             priority,
-            assignedTo,
-            dueDate
-        });
+            assigned_to,  
+            due_date      
+        })
 
         res.status(200).json({
             success: true,

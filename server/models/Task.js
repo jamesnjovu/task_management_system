@@ -103,14 +103,15 @@ class Task {
      * @returns {Object} Updated task
      */
     static async update(id, taskData) {
+        console.log(taskData, 'taskData')
         const updateData = {};
 
         if (taskData.title) updateData.title = taskData.title;
         if (taskData.description !== undefined) updateData.description = taskData.description;
         if (taskData.status) updateData.status = taskData.status;
         if (taskData.priority) updateData.priority = taskData.priority;
-        if (taskData.assignedTo !== undefined) updateData.assigned_to = taskData.assignedTo;
-        if (taskData.dueDate !== undefined) updateData.due_date = taskData.dueDate;
+        if (taskData.assigned_to) updateData.assigned_to = taskData.assigned_to;
+        if (taskData.due_date) updateData.due_date = taskData.due_date;
 
         updateData.updated_at = db.fn.now();
 
